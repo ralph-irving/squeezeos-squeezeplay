@@ -466,8 +466,6 @@ function _networkScanComplete(self, iface)
 	-- process existing scan results
 	_scanResults(self, iface)
 
--- fm+
---[[
 	-- schedule network scan 
 	self.scanMenu:addTimer(5000,
 		function()
@@ -478,14 +476,17 @@ function _networkScanComplete(self, iface)
 
 			window:setTitle(self:string("NETWORK_FINDING_NETWORKS"))
 			iface:scan(function()
-				window:setTitle(self:string("NETWORK_WIRELESS_NETWORKS"))
+				-- Restore window title, but after an interval, otherwise flashes by too fast on baby.
+				window:addTimer(500,
+								function()
+									window:setTitle(self:string("NETWORK_WIRELESS_NETWORKS"))
+								end,
+								true)	-- once
 				_scanResults(self, iface)
 			end)
 		end,
 		false	-- repeat
 	)
---]]
--- fm-
 	_helpAction(self, window, "NETWORK_LIST_HELP", "NETWORK_LIST_HELP_BODY", self.scanMenu)
 
 	self:tieAndShowWindow(window)
@@ -508,9 +509,21 @@ function _scanResults(self, iface)
 	local scanTable = iface:scanResults()
 
 	for ssid, entry in pairs(scanTable) do
-		-- hide squeezebox ad-hoc networks
-		if not string.match(ssid, "logitech[%-%+%*]squeezebox[%-%+%*](%x+)") then
 
+		if string.match(ssid, "logitech[%-%+%*]squeezebox[%-%+%*](%x+)") then
+			-- hide squeezebox ad-hoc networks
+
+		elseif string.match(ssid, "^\\x00") then
+			-- hide "hidden" SSIDs
+			-- Note: wpa_supplicant >= v2.0 changed its SSID output to use
+			-- printf-escaped strings for non-ASCII characters instead of
+			-- masking with '_'.
+			-- Immediate impact is that "hidden" SSIDs are now visible.
+			-- We recognize these by their 'null' first byte which will
+			-- show up as '\x00'.
+			log:debug("hiding SSID: " .. ssid)
+
+		else
 			if not self.scanResults[ssid] then
 				_addNetwork(self, iface, ssid)
 			end
