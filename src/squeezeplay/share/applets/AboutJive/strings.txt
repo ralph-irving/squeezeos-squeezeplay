@@ -63,6 +63,21 @@ ABOUT_CREDITS
 	RU	Разработчики:
 	SV	Erkännanden:
 
+ABOUT_COMMUNITY
+	CS	Kredity za vydání komunity:
+	DA	Fællesskabsudgivelse Tak til:
+	DE	Gemeinschaft Veröffentlichung Mitwirkende:
+	EN	Community Release Credits:
+	ES	Lanzamiento de la Comunidad Créditos:
+	FI	Yhteisön Julkaisu Tekijät:
+	FR	Crédits de sortie de la communauté:
+	IT	Crediti per il rilascio della community:
+	NL	Credits voor Community Release:
+	NO	Samfunnsutgivelseskreditter:
+	PL	Kredyty Społeczność Wydaniu:
+	RU	кредиты сообщества релиза:
+	SV	Gemenskapsreleasekrediter:
+
 ABOUT_VERSION
 	CS	Verze:
 	DA	Version:
