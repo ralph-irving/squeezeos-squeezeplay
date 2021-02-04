@@ -123,7 +123,6 @@ function init(self)
 		["usb"] = 1,
 		["sdcard"] = 1,
 		["hasDigitalOut"] = 1,
-		["hasTinySC"] = 1,
 		["IRBlasterCapable"] = 0,
 	})
 
