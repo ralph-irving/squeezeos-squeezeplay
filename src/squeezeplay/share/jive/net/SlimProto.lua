@@ -367,7 +367,8 @@ function __init(self, jnt, heloPacket)
 	if System:hasDigitalOut() then
 		obj:capability("HasDigitalOut", 1)
 	end
-	obj:capability("Balance", 1)
+	-- Balance enabled on server for hardware players.
+	-- obj:capability("Balance", 1)
 
 	obj.statusCallback = _defaultStatusCallback
 
