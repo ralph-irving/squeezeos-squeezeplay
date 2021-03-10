@@ -169,19 +169,19 @@ BSP_BRIGHTNESS_MANUAL
 	SV	Manuell ljusstyrka
 
 BSP_BRIGHTNESS_MIN
-	CS	Minimální jas (Auto)
-	DA	Mindste lysstyrke (automatisk)
-	DE	Minimale Helligkeit (automatisch)
-	EN	Minimal Brightness (Auto)
-	ES	Brillo mínimo (automático)
-	FI	Vähimmäiskirkkaus (autom.)
-	FR	Luminosité minimale (Auto)
-	IT	Luminosità minima (auto)
-	NL	Minimale helderheid (automatisch)
-	NO	Minimal lysstyrke (Automatisk)
-	PL	Minimalna jasność (automatycznie)
-	RU	Минимальная яркость (Авто)
-	SV	Minsta ljusstyrka (auto)
+	CS	Minimální jas
+	DA	Mindste lysstyrke
+	DE	Minimale Helligkeit
+	EN	Minimal Brightness
+	ES	Brillo mínimo
+	FI	Vähimmäiskirkkaus
+	FR	Luminosité minimale
+	IT	Luminosità minima
+	NL	Minimale helderheid
+	NO	Minimal lysstyrke
+	PL	Minimalna jasność
+	RU	Минимальная яркость
+	SV	Minsta ljusstyrka
 
 BSP_BRIGHTNESS_ADJUST_HELP
 	CS	K nastavení jasu použijte kolečko.
@@ -227,4 +227,153 @@ SERVER_HAS_BEEN_STOPPED_INFO
 	PL	Lokalna usługa muzyczna została zatrzymana ze względu na problem.
 	RU	Локальная музыкальная служба остановлена из-за неполадок.
 	SV	Lokal musiktjänst har stoppats på grund av problem.
+	
+BSP_BRIGHTNESS_SCREENSAVER
+	CS	Reduce on screen saver
+	DA	Reduce on screen saver
+	DE	Reduce on screen saver
+	EN	Reduce on screen saver
+	ES	Reduce on screen saver
+	FI	Reduce on screen saver
+	FR	Reduce on screen saver
+	IT	Reduce on screen saver
+	NL	Verminder bij schermbeveiliging
+	NO	Reduce on screen saver
+	PL	Reduce on screen saver
+	RU	Reduce on screen saver
+	SV	Reduce on screen saver
 
+BSP_BRIGHTNESS_DIMWHENPLAYING
+	CS	Při přehrávání
+	DA	Under afspilning
+	DE	Bei Wiedergabe
+	EN	When playing
+	ES	Al reproducir
+	FI	Toistettaessa
+	FR	Pendant la lecture
+	IT	Durante la riproduzione
+	NL	Tijdens afspelen
+	NO	Under avspilling
+	PL	Podczas odtwarzania
+	RU	При воспроизведении
+	SV	Vid uppspelning
+
+BSP_BRIGHTNESS_DIMWHENSTOPPED
+	CS	Při zastavení
+	DA	Når den er stoppet
+	DE	Wenn angehalten
+	EN	When stopped
+	ES	Al detener
+	FI	Keskeytettynä
+	FR	A l'arrêt
+	IT	Quando la riproduzione è interrotta
+	NL	Wanneer gestopt
+	NO	Ved stopp
+	PL	Po zatrzymaniu
+	RU	При остановке
+	SV	I stoppat läge
+
+BSP_BRIGHTNESS_DIMWHENOFF
+	CS	Při vypnutí
+	DA	Når den er slukket
+	DE	Wenn aus
+	EN	When off
+	ES	Al apagar
+	FI	Laitteen ollessa pois päältä
+	FR	En état éteint
+	IT	Se disattivato
+	NL	Wanneer uit
+	NO	Av
+	PL	Po wyłączeniu
+	RU	При выкл.
+	SV	I avstängt läge
+
+BSP_BRIGHTNESS_ACTIVE_MAXIMUM
+	CS	Maximum brightness (active)
+	DA	Maximum brightness (active)
+	DE	Maximum brightness (active)
+	EN	Maximum brightness (active)
+	ES	Maximum brightness (active)
+	FI	Maximum brightness (active)
+	FR	Maximum brightness (active)
+	IT	Maximum brightness (active)
+	NL	Maximale helderheid (actief)
+	NO	Maximum brightness (active)
+	PL	Maximum brightness (active)
+	RU	Maximum brightness (active)
+	SV	Maximum brightness (active)
+	
+BSP_BRIGHTNESS_ACTIVE_MINIMUM
+	CS	Minimum brightness (active)
+	DA	Minimum brightness (active)
+	DE	Minimum brightness (active)
+	EN	Minimum brightness (active)
+	ES	Minimum brightness (active)
+	FI	Minimum brightness (active)
+	FR	Minimum brightness (active)
+	IT	Minimum brightness (active)
+	NL	Minimale helderheid (actief)
+	NO	Minimum brightness (active)
+	PL	Minimum brightness (active)
+	RU	Minimum brightness (active)
+	SV	Minimum brightness (active)
+	
+BSP_BRIGHTNESS_SCREENSAVER_MAXIMUM
+	CS	Maximum brightness (screen saver)
+	DA	Maximum brightness (screen saver)
+	DE	Maximum brightness (screen saver)
+	EN	Maximum brightness (screen saver)
+	ES	Maximum brightness (screen saver)
+	FI	Maximum brightness (screen saver)
+	FR	Maximum brightness (screen saver)
+	IT	Maximum brightness (screen saver)
+	NL	Maximale helderheid (schermbeveiliging)
+	NO	Maximum brightness (screen saver)
+	PL	Maximum brightness (screen saver)
+	RU	Maximum brightness (screen saver)
+	SV	Maximum brightness (screen saver)
+	
+BSP_BRIGHTNESS_SCREENSAVER_MINIMUM
+	CS	Minimum brightness (screen saver)
+	DA	Minimum brightness (screen saver)
+	DE	Minimum brightness (screen saver)
+	EN	Minimum brightness (screen saver)
+	ES	Minimum brightness (screen saver)
+	FI	Minimum brightness (screen saver)
+	FR	Minimum brightness (screen saver)
+	IT	Minimum brightness (screen saver)
+	NL	Minimale helderheid (schermbeveiliging)
+	NO	Minimum brightness (screen saver)
+	PL	Minimum brightness (screen saver)
+	RU	Minimum brightness (screen saver)
+	SV	Minimum brightness (screen saver)
+	
+BSP_BRIGHTNESS_ACTIVE_WHEN_PLAYING
+	CS	Use active brightness when playing
+	DA	Use active brightness when playing
+	DE	Use active brightness when playing
+	EN	Use active brightness when playing
+	ES	Use active brightness when playing
+	FI	Use active brightness when playing
+	FR	Use active brightness when playing
+	IT	Use active brightness when playing
+	NL	Gebruik actieve helderheid bij afspelen
+	NO	Use active brightness when playing
+	PL	Use active brightness when playing
+	RU	Use active brightness when playing
+	SV	Use active brightness when playing
+
+BSP_BRIGHTNESS_DISABLE_SCREEN_SAFE
+	CS	Disable gradual dim when idle (not recommended!)
+	DA	Disable gradual dim when idle (not recommended!)
+	DE	Disable gradual dim when idle (not recommended!) 
+	EN	Disable gradual dim when idle (not recommended!) 
+	ES	Disable gradual dim when idle (not recommended!) 
+	FI	Disable gradual dim when idle (not recommended!) 
+	FR	Disable gradual dim when idle (not recommended!) 
+	IT	Disable gradual dim when idle (not recommended!) 
+	NL	Helderheid voor scherm niet aanpassen (niet aanbevolen!)
+	NO	Disable gradual dim when idle (not recommended!) 
+	PL	Disable gradual dim when idle (not recommended!) 
+	RU	Disable gradual dim when idle (not recommended!) 
+	SV	Disable gradual dim when idle (not recommended!) 
