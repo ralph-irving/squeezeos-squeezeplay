@@ -25,6 +25,7 @@ local Checkbox               = require("jive.ui.Checkbox")
 local Framework              = require("jive.ui.Framework")
 local Group                  = require("jive.ui.Group")
 local Icon                   = require("jive.ui.Icon")
+local Button                 = require("jive.ui.Button")
 local Event                  = require("jive.ui.Event")
 local Label                  = require("jive.ui.Label")
 local Popup                  = require("jive.ui.Popup")
@@ -36,6 +37,7 @@ local Slider                 = require("jive.ui.Slider")
 local Window                 = require("jive.ui.Window")
 local RadioGroup             = require("jive.ui.RadioGroup")
 local RadioButton            = require("jive.ui.RadioButton")
+local Checkbox               = require("jive.ui.Checkbox")
 
 local debug                  = require("jive.utils.debug")
 
@@ -203,9 +205,18 @@ function init(self)
 				if not self:isScreenOff() then
 					self:doAutomaticBrightnessTimer()
 				end
+			else
+				if self.powerState == "ACTIVE" then
+					if self:getBrightness() < settings.brightness then
+						self:setBrightness( settings.brightness)
+					end
+				end
 			end
 		end)
 	brightnessTimer:start()
+	
+	-- reduce brightness on screensaver
+	self:initReduceBrightnessOnScreenSaver()
 
 	-- status bar updates
 	local updateTask = Task("statusbar", self, _updateTask)
@@ -474,8 +485,24 @@ function doAutomaticBrightnessTimer(self)
 	end
 
 	-- Make sure bright Cur stays above minimum
-	if brightMin > brightCur then
-		brightCur = brightMin
+	--if brightMin > brightCur then
+	--	brightCur = brightMin
+	--end
+	
+	-- Screen saver is not active active OR playing and the always active setting is on
+	-- use active brightness settings
+	if appletManager:callService("isScreensaverActive") == false or (_getMode() == "whenPlaying" and settings.brightnessActiveScreenSaver == true) then
+		if brightCur > settings.brightnessActive then
+			brightCur = settings.brightnessActive
+		elseif brightCur < settings.brightnessMinimumActive then
+			brightCur = settings.brightnessMinimumActive
+		end
+	else
+		if brightCur > settings.brightnessScreenSaver then
+			brightCur = settings.brightnessScreenSaver
+		elseif brightCur < settings.brightnessMinimumScreenSaver then
+			brightCur = settings.brightnessMinimumScreenSaver
+		end
 	end
 
 	-- Set Brightness
@@ -528,7 +555,7 @@ function _setBrightness(self, level)
 
 	-- Gradually reduce display brightness in IDLE mode when over half brightness
 	if self.powerState == "IDLE" then
-		if level > (MAX_BRIGHTNESS_LEVEL / 2) then
+		if level > (MAX_BRIGHTNESS_LEVEL / 2) and settings.disableDimToSaveScreen == false then
 			level = level - math.floor(10 * (level - (MAX_BRIGHTNESS_LEVEL / 2)) / (MAX_BRIGHTNESS_LEVEL / 2))
 		end
 	end
@@ -1056,7 +1083,7 @@ function settingsMinBrightnessShow (self, menuItem)
 --			log:info("Value: " .. value)
 
 			-- Set to automatic when changing minimal brightness
-			settings.brightnessControl = "automatic"
+			--settings.brightnessControl = "automatic"
 
 			if value < MIN_BRIGHTNESS_LEVEL then
 				value = MIN_BRIGHTNESS_LEVEL
@@ -1118,7 +1145,7 @@ function settingsBrightnessShow (self, menuItem)
 			settings.brightness = value
 
 			-- If user modifies manual brightness - switch to manaul brightness
-			settings.brightnessControl = "manual"
+			--settings.brightnessControl = "manual"
 
 			local bright = value
 
@@ -1168,6 +1195,7 @@ function settingsBrightnessControlShow(self, menuItem)
 			style = "item_choice",
 			check = RadioButton("radio", group, function(event, menuItem)
 						settings.brightnessControl = "automatic"
+						screensaverTimer:stop()
 					end,
 					settings.brightnessControl == "automatic")
 		},
@@ -1176,9 +1204,24 @@ function settingsBrightnessControlShow(self, menuItem)
 			style = "item_choice",
 			check = RadioButton("radio", group, function(event, menuItem)
 						settings.brightnessControl = "manual"
+						screensaverTimer:start()
 						self:setBrightness(settings.brightness)
 					end,
 					settings.brightnessControl == "manual")
+		},
+		{
+			text = self:string("BSP_BRIGHTNESS_DISABLE_SCREEN_SAFE"),
+			style = "item_choice",
+                        check = Checkbox( "checkbox",
+				function( _, isSelected)
+                                	if isSelected then
+						settings.disableDimToSaveScreen = true
+					else
+						settings.disableDimToSaveScreen = false
+					end
+				end,
+				settings.disableDimToSaveScreen
+				)
 		}
 	})
 
@@ -1200,6 +1243,573 @@ function free(self)
 	return false
 end
 
+--[[
+
+Reduce brightness when screensaver is active
+Patch by Daniel Vijge (daniel@vijge.net)
+Version 1.3
+
+Version history:
+version 1.3 (26-11-2012):
+Setting use active brightness when playing was not saved correctly
+version 1.2 (21-08-2012):
+Added option to disable dimmer to safe screen life time (use with caution!)
+version 0.4 (29-02-2012):
+Added automatic brightness control options
+version 0.3 (24-11-2011):
+WhenOff mode did not work
+version 0.2 (31-03-2011):
+Increase brightness when play is started through external controller
+version 0.1 (27-03-2011): 
+Initial release
+
+]]--
+
+function initReduceBrightnessOnScreenSaver(self)
+	-- initial settings
+	local settings = self:getSettings()
+	
+	settings.dimWhenPlaying = _getDefaultSetting(settings.dimWhenPlaying, false)
+	settings.dimWhenStopped = _getDefaultSetting(settings.dimWhenStopped, true)
+	settings.dimWhenOff = _getDefaultSetting(settings.dimWhenOff, true)
+	settings.brightnessActiveScreenSaver = _getDefaultSetting(settings.brightnessActiveScreenSaver, true)
+	
+	settings.brightnessActive = _getDefaultSetting(settings.brightnessActive, settings.brightness)
+	settings.brightnessMinimumActive = _getDefaultSetting(settings.brightnessMinimumActive, settings.brightnessMinimal)
+	settings.brightnessScreenSaver = _getDefaultSetting(settings.brightnessScreenSaver, settings.brightness)
+	settings.brightnessMinimumScreenSaver = _getDefaultSetting(settings.brightnessMinimumScreenSaver, settings.brightnessMinimal)
+	
+	settings.disableDimToSaveScreen = _getDefaultSetting(settings.disableDimToSaveScreen, false)
+
+	-- this is the timer for manual brightness control
+	screensaverTimer = Timer(5000, 
+		function()
+			if appletManager:callService("isScreensaverActive") then
+				if self:getBrightness() > settings.brightnessMinimal then	
+					if getReduceBrightnessOnScreenSaverSetting() then					
+						self:setBrightness( settings.brightnessMinimal )
+					end
+				end
+			end
+
+			-- this is weird, but we need this to increase the brightness when
+			-- a play command is given using a external interface (controller, web,
+			-- phone, CLI). Those do not register an action event that addListener()
+			-- on line 221 responds to.
+			if _getMode() == "whenPlaying" then
+				if not settings.dimWhenPlaying then
+					if self:getBrightness() == settings.brightnessMinimal then
+						self:setBrightness( settings.brightness )
+					end
+				end
+			end
+		end)
+	
+	-- if brightness control is manual, start the timer
+	if settings.brightnessControl == "manual" then
+		screensaverTimer:start()
+	end
+end
+
+function _getDefaultSetting(setting, default)
+	if setting == nil then
+		return default
+	else
+		return setting
+	end
+end
+		
+-- get the state of the squeezebox, taken from ScreenSaver applet
+function _getMode(self)
+	local player = appletManager:callService("getCurrentPlayer")
+	if jiveMain:getSoftPowerState() == "off" and System:hasSoftPower() then
+		return 'whenOff'
+	else
+		if player and player:getPlayMode() == "play" then
+			return 'whenPlaying'
+		end
+	end
+	return 'whenStopped'
+end
+
+-- should the brightness be reduced in the current playing state?
+function getReduceBrightnessOnScreenSaverSetting(self)
+	local mode = _getMode()
+	if mode == "whenPlaying" then
+		return settings.dimWhenPlaying
+	elseif mode == "whenStopped" then
+		return settings.dimWhenStopped
+	elseif mode == "whenOff" then
+		return settings.dimWhenOff
+	else
+		-- this should not happen, but just to be safe...
+		return false
+	end
+end
+
+function menuAutomaticBrightness(self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_AUTOMATIC"), squeezeboxjiveTitleStyle)
+	
+	local settings = self:getSettings()
+	
+	local menu = SimpleMenu( "menu", {
+					{
+						text = self:string("BSP_BRIGHTNESS_ACTIVE_MAXIMUM"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:settingsBrightnessSliderActive(menuItem)
+						end 
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_ACTIVE_MINIMUM"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:settingsBrightnessSliderActiveMinimum(menuItem)
+						end 
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_SCREENSAVER_MAXIMUM"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:settingsBrightnessSliderScreenSaver(menuItem)
+						end 
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_SCREENSAVER_MINIMUM"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:settingsBrightnessSliderScreenSaverMinimum(menuItem)
+						end 
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_ACTIVE_WHEN_PLAYING"),
+						style = 'item_choice',
+						check = Checkbox( "checkbox",
+								function( _, isSelected)
+									if isSelected then
+										settings.brightnessActiveScreenSaver = true
+									else
+										settings.brightnessActiveScreenSaver = false
+									end
+								end,
+								settings.brightnessActiveScreenSaver
+							)
+					},
+					
+				})
+				
+	window:addListener(EVENT_WINDOW_POP,
+		function()
+			self:storeSettings()
+		end
+	)
+	
+	window:addWidget(menu)
+	window:show()
+end
+
+function menuManualBrightness(self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_MANUAL"), squeezeboxjiveTitleStyle)
+	
+	local menu = SimpleMenu( "menu", {
+					{
+						text = self:string("BSP_BRIGHTNESS_MANUAL"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:settingsBrightnessShow(menuItem)
+						end 
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_MIN"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:settingsMinBrightnessShow(menuItem)
+						end 
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_SCREENSAVER"),
+						sound = "WINDOWSHOW",
+						callback = function(event, menuItem)
+							self:menuReduceBrightness()
+						end 
+					},
+				})
+	window:addWidget(menu)
+	window:show()
+end
+
+function menuReduceBrightness(self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_SCREENSAVER"), squeezeboxjiveTitleStyle)
+	local settings = self:getSettings()
+
+	local menu = SimpleMenu( "menu", {
+					{
+						text = self:string("BSP_BRIGHTNESS_DIMWHENPLAYING"),
+						style = 'item_choice',
+						check = Checkbox( "checkbox",
+								function( _, isSelected)
+									if isSelected then
+										settings.dimWhenPlaying = true
+									else
+										settings.dimWhenPlaying = false
+									end
+								end,
+								settings.dimWhenPlaying
+							)
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_DIMWHENSTOPPED"),
+						style = 'item_choice',
+						check = Checkbox( "checkbox",
+								function( _, isSelected)
+									if isSelected then
+										settings.dimWhenStopped = true
+									else
+										settings.dimWhenStopped = false
+									end
+								end,
+								settings.dimWhenStopped
+							)
+					},
+					{
+						text = self:string("BSP_BRIGHTNESS_DIMWHENOFF"),
+						style = 'item_choice',
+						check = Checkbox( "checkbox",
+								function( _, isSelected)
+									if isSelected then
+										settings.dimWhenOff = true
+									else
+										settings.dimWhenOff = false
+									end
+								end,
+								settings.dimWhenOff
+							)
+					},
+				})
+
+
+	window:addListener(EVENT_WINDOW_POP,
+		function()
+			self:storeSettings()
+		end
+	)
+
+	window:addWidget(menu)
+	window:show()
+
+end
+
+function settingsBrightnessSliderActive (self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_ACTIVE_MAXIMUM"), squeezeboxjiveTitleStyle)
+
+	local settings = self:getSettings()
+	local level = settings.brightnessActive
+
+	local slider = Slider('brightness_slider', 1, 75, level,
+				function(slider, value, done)
+					--log:info("Value: " .. value)
+
+					settings.brightnessActive = value
+					
+					-- Make sure preview min brightness does
+					--  not go below actual brightness
+					if value > brightTarget then
+						self:setBrightness( value)
+					else
+						self:setBrightness( math.floor( brightTarget))
+					end
+					
+					-- done is true for 'go' and 'play' but we do not want to leave
+					if done then
+						window:playSound("BUMP")
+						window:bumpRight()
+					end
+				end)
+	slider.jumpOnDown = false
+	slider.dragThreshold = 5
+
+--	window:addWidget(Textarea("help_text", self:string("BSP_BRIGHTNESS_ADJUST_HELP")))
+	window:addWidget(Group('brightness_group', {
+				div1 = Icon('div1'),
+				div2 = Icon('div2'),
+
+
+				down  = Button(
+					Icon('down'),
+					function()
+						local e = Event:new(EVENT_SCROLL, -1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				up  = Button(
+					Icon('up'),
+					function()
+						local e = Event:new(EVENT_SCROLL, 1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				slider = slider,
+			}))
+
+	window:addActionListener("page_down", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, 1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+	window:addActionListener("page_up", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, -1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+
+
+	window:addListener(EVENT_WINDOW_POP,
+		function()			
+			self:storeSettings()
+		end
+	)
+
+	window:show()
+	return window
+end
+
+function settingsBrightnessSliderActiveMinimum (self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_ACTIVE_MINIMUM"), squeezeboxjiveTitleStyle)
+
+	local settings = self:getSettings()
+	local level = settings.brightnessMinimumActive
+
+	local slider = Slider('brightness_slider', 1, 75, level,
+				function(slider, value, done)
+					--log:info("Value: " .. value)
+
+					settings.brightnessMinimumActive = value
+					
+					-- Make sure preview min brightness does
+					--  not go below actual brightness
+					if value > brightTarget then
+						self:setBrightness( value)
+					else
+						self:setBrightness( math.floor( brightTarget))
+					end
+					
+					-- done is true fsettingsBrightnessSliderScreenSaverMinimumor 'go' and 'play' but we do not want to leave
+					if done then
+						window:playSound("BUMP")
+						window:bumpRight()
+					end
+				end)
+	slider.jumpOnDown = false
+	slider.dragThreshold = 5
+
+--	window:addWidget(Textarea("help_text", self:string("BSP_BRIGHTNESS_ADJUST_HELP")))
+	window:addWidget(Group('brightness_group', {
+				div1 = Icon('div1'),
+				div2 = Icon('div2'),
+
+
+				down  = Button(
+					Icon('down'),
+					function()
+						local e = Event:new(EVENT_SCROLL, -1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				up  = Button(
+					Icon('up'),
+					function()
+						local e = Event:new(EVENT_SCROLL, 1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				slider = slider,
+			}))
+
+	window:addActionListener("page_down", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, 1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+	window:addActionListener("page_up", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, -1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+
+
+	window:addListener(EVENT_WINDOW_POP,
+		function()			
+			self:storeSettings()
+		end
+	)
+
+	window:show()
+	return window
+end
+
+function settingsBrightnessSliderScreenSaver (self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_SCREENSAVER_MAXIMUM"), squeezeboxjiveTitleStyle)
+
+	local settings = self:getSettings()
+	local level = settings.brightnessScreenSaver
+
+	local slider = Slider('brightness_slider', 1, 75, level,
+				function(slider, value, done)
+					--log:info("Value: " .. value)
+
+					settings.brightnessScreenSaver = value
+					
+					-- Make sure preview min brightness does
+					--  not go below actual brightness
+					if value > brightTarget then
+						self:setBrightness( value)
+					else
+						self:setBrightness( math.floor( brightTarget))
+					end
+					
+					-- done is true for 'go' and 'play' but we do not want to leave
+					if done then
+						window:playSound("BUMP")
+						window:bumpRight()
+					end
+				end)
+	slider.jumpOnDown = false
+	slider.dragThreshold = 5
+
+--	window:addWidget(Textarea("help_text", self:string("BSP_BRIGHTNESS_ADJUST_HELP")))
+	window:addWidget(Group('brightness_group', {
+				div1 = Icon('div1'),
+				div2 = Icon('div2'),
+
+
+				down  = Button(
+					Icon('down'),
+					function()
+						local e = Event:new(EVENT_SCROLL, -1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				up  = Button(
+					Icon('up'),
+					function()
+						local e = Event:new(EVENT_SCROLL, 1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				slider = slider,
+			}))
+
+	window:addActionListener("page_down", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, 1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+	window:addActionListener("page_up", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, -1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+
+
+	window:addListener(EVENT_WINDOW_POP,
+		function()			
+			self:storeSettings()
+		end
+	)
+
+	window:show()
+	return window
+end
+
+function settingsBrightnessSliderScreenSaverMinimum (self, menuItem)
+	local window = Window("text_list", self:string("BSP_BRIGHTNESS_SCREENSAVER_MINIMUM"), squeezeboxjiveTitleStyle)
+
+	local settings = self:getSettings()
+	local level = settings.brightnessMinimumScreenSaver
+
+	local slider = Slider('brightness_slider', 1, 75, level,
+				function(slider, value, done)
+					--log:info("Value: " .. value)
+
+					settings.brightnessMinimumScreenSaver = value
+					
+					-- Make sure preview min brightness does
+					--  not go below actual brightness
+					if value > brightTarget then
+						self:setBrightness( value)
+					else
+						self:setBrightness( math.floor( brightTarget))
+					end
+					
+					-- done is true for 'go' and 'play' but we do not want to leave
+					if done then
+						window:playSound("BUMP")
+						window:bumpRight()
+					end
+				end)
+	slider.jumpOnDown = false
+	slider.dragThreshold = 5
+
+--	window:addWidget(Textarea("help_text", self:string("BSP_BRIGHTNESS_ADJUST_HELP")))
+	window:addWidget(Group('brightness_group', {
+				div1 = Icon('div1'),
+				div2 = Icon('div2'),
+
+
+				down  = Button(
+					Icon('down'),
+					function()
+						local e = Event:new(EVENT_SCROLL, -1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				up  = Button(
+					Icon('up'),
+					function()
+						local e = Event:new(EVENT_SCROLL, 1)
+						Framework:dispatchEvent(slider, e)
+						return EVENT_CONSUME
+					end
+				),
+				slider = slider,
+			}))
+
+	window:addActionListener("page_down", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, 1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+	window:addActionListener("page_up", self,
+				function()
+					local e = Event:new(EVENT_SCROLL, -1)
+					Framework:dispatchEvent(self.volSlider, e)
+					return EVENT_CONSUME
+				end)
+
+
+	window:addListener(EVENT_WINDOW_POP,
+		function()			
+			self:storeSettings()
+		end
+	)
+
+	window:show()
+	return window
+end
 
 --[[
 
