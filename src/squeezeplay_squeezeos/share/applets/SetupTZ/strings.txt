@@ -1098,19 +1098,19 @@ TZ_ASIA_MAGADAN
 	SV	(GMT + 11:00) Magadan, Salomonöarna, Nya Kaledonien
 
 TZ_PACIFIC_NORFOLK
-	CS	(GMT+11:30) ostrov Norfolk
-	DA	(GMT+11:30) Norfolk Island
-	DE	(GMT+11:30) Norfolk-Insel
-	EN	(GMT+11:30) Norfolk Island
-	ES	(GMT+11:30) Isla Norfolk
-	FI	(GMT+11.30) Norfolkinsaari
-	FR	(GMT+11:30) Ile Norfolk
-	IT	(GMT+11:30) Norfolk
-	NL	(GMT+11:30) Norfolkeiland
-	NO	(GMT+11:30) Norfolkøya
-	PL	(GMT+11:30) Wyspa Norfolk
-	RU	(GMT+11:30) – остров Норфолк
-	SV	(GMT + 11:30) Norfolk Island
+	CS	(GMT+11:00) ostrov Norfolk
+	DA	(GMT+11:00) Norfolk Island
+	DE	(GMT+11:00) Norfolk-Insel
+	EN	(GMT+11:00) Norfolk Island
+	ES	(GMT+11:00) Isla Norfolk
+	FI	(GMT+11.00) Norfolkinsaari
+	FR	(GMT+11:00) Ile Norfolk
+	IT	(GMT+11:00) Norfolk
+	NL	(GMT+11:00) Norfolkeiland
+	NO	(GMT+11:00) Norfolkøya
+	PL	(GMT+11:00) Wyspa Norfolk
+	RU	(GMT+11:00) – остров Норфолк
+	SV	(GMT + 11:00) Norfolk Island
 
 TZ_PACIFIC_FIJI
 	CS	(GMT+12:00) Fidži, Kamčatka, Marshallovy ostrovy
