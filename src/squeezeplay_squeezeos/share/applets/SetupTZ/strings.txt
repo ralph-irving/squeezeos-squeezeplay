@@ -752,6 +752,21 @@ TZ_ASIA_CALCUTTA
 	RU	(GMT+05:30) – Ченнай, Калькутта, Бомбей, Нью-Дели
 	SV	(GMT + 5:30) Chennai (Madras), Kolkata (Calcutta), Mumbai (Bombay), New Delhi
 
+TZ_ASIA_COLOMBO
+	CS	(GMT+05:30) Sri Jayawardenepura
+	DA	(GMT+05:30) Sri Jayawardenepura
+	DE	(GMT+05:30) Sri Jayawardenepura
+	EN	(GMT+05:30) Sri Jayawardenepura
+	ES	(GMT+05:30) Sri Jayawardenepura
+	FI	(GMT+05:30) Sri Jayawardenepura
+	FR	(GMT+05:30) Sri Jayawardenepura
+	IT	(GMT+05:30) Sri Jayawardenepura
+	NL	(GMT+05:30) Sri Jayawardenepura
+	NO	(GMT + 05.30) Sri Jayawardenepura
+	PL	(GMT+05:30) Sri Jayawardenepura
+	RU	(GMT+05:30) – Шри Джаяварденепура
+	SV	(GMT + 5:30) Sri Jayawardenepura
+
 TZ_ASIA_KATMANDU
 	CS	(GMT+05:45) Káthmandú
 	DA	(GMT+05:45) Kathmandu
@@ -766,21 +781,6 @@ TZ_ASIA_KATMANDU
 	PL	(GMT+05:45) Kathmandu
 	RU	(GMT+05:45) – Катманду
 	SV	(GMT + 5:45) Katmandu
-
-TZ_ASIA_COLOMBO
-	CS	(GMT+06:00) Sri Jayawardenepura
-	DA	(GMT+06:00) Sri Jayawardenepura
-	DE	(GMT+06:00) Sri Jayawardenepura
-	EN	(GMT+06:00) Sri Jayawardenepura
-	ES	(GMT+06:00) Sri Jayawardenepura
-	FI	(GMT+06.00) Sri Jayawardenepura
-	FR	(GMT+06:00) Sri Jayawardenepura
-	IT	(GMT+06:00) Sri Jayawardenepura
-	NL	(GMT+06:00) Sri Jayawardenepura
-	NO	(GMT + 06.00) Sri Jayawardenepura
-	PL	(GMT+06:00) Sri Jayawardenepura
-	RU	(GMT+06:00) – Шри Джаяварденепура
-	SV	(GMT + 6:00) Sri Jayawardenepura
 
 TZ_ASIA_DHAKA
 	CS	(GMT+06:00) Astana, Dhaka
