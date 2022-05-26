@@ -228,19 +228,19 @@ TZ_AMERICA_NEW_YORK
 	SV	(GMT – 5:00) Eastern Time (USA och Kanada)
 
 TZ_AMERICA_CARACAS
-	CS	(GMT-04:00) Caracas, La Paz
-	DA	(GMT-04:00) Caracas, La Paz
-	DE	(GMT-04:00) Caracas, La Paz
-	EN	(GMT-04:00) Caracas, La Paz
-	ES	(GMT-04:00) Caracas, La Paz
-	FI	(GMT-04.00) Caracas, La Paz
-	FR	(GMT-04:00) Caracas, La Paz
-	IT	(GMT-04:00) Caracas, La Paz
-	NL	(GMT-04:00) Caracas, La Paz
-	NO	(GMT – 04.00) Caracas, La Paz
-	PL	(GMT-04:00) Caracas, La Paz
-	RU	(GMT-04:00) – Каракас, Ла-Пас
-	SV	(GMT – 4:00) Caracas, La Paz
+	CS	(GMT-04:00) Caracas, La Paz, Georgetown
+	DA	(GMT-04:00) Caracas, La Paz, Georgetown
+	DE	(GMT-04:00) Caracas, La Paz, Georgetown
+	EN	(GMT-04:00) Caracas, La Paz, Georgetown
+	ES	(GMT-04:00) Caracas, La Paz, Georgetown
+	FI	(GMT-04.00) Caracas, La Paz, Georgetown
+	FR	(GMT-04:00) Caracas, La Paz, Georgetown
+	IT	(GMT-04:00) Caracas, La Paz, Georgetown
+	NL	(GMT-04:00) Caracas, La Paz, Georgetown
+	NO	(GMT – 04.00) Caracas, La Paz, Georgetown
+	PL	(GMT-04:00) Caracas, La Paz, Georgetown
+	RU	(GMT-04:00) – Каракас, Ла-Пас, Джорджтаун
+	SV	(GMT – 4:00) Caracas, La Paz, Georgetown
 
 TZ_AMERICA_SANTIAGO
 	CS	(GMT-04:00) Santiago
@@ -288,19 +288,19 @@ TZ_AMERICA_ST_JOHNS
 	SV	(GMT – 3:30) Newfoundland
 
 TZ_AMERICA_BUENOS_AIRES
-	CS	(GMT-03:00) Buenos Aires, Georgetown
-	DA	(GMT-03:00) Buenos Aires, Georgetown
-	DE	(GMT-03:00) Buenos Aires, Georgetown
-	EN	(GMT-03:00) Buenos Aires, Georgetown
-	ES	(GMT-03:00) Buenos Aires, Georgetown
-	FI	(GMT-03.00) Buenos Aires, Georgetown
-	FR	(GMT-03:00) Buenos Aires, Georgetown
-	IT	(GMT-03:00) Buenos Aires, Georgetown
-	NL	(GMT-03:00) Buenos Aires, Georgetown
-	NO	(GMT – 03.00) Brasilia, Buenos Aires, Georgetown
-	PL	(GMT-03:00) Buenos Aires, Georgetown
-	RU	(GMT-03:00) – Буэнос-Айрес, Джорджтаун
-	SV	(GMT – 3:00) Buenos Aires, Georgetown
+	CS	(GMT-03:00) Buenos Aires
+	DA	(GMT-03:00) Buenos Aires
+	DE	(GMT-03:00) Buenos Aires
+	EN	(GMT-03:00) Buenos Aires
+	ES	(GMT-03:00) Buenos Aires
+	FI	(GMT-03.00) Buenos Aires
+	FR	(GMT-03:00) Buenos Aires
+	IT	(GMT-03:00) Buenos Aires
+	NL	(GMT-03:00) Buenos Aires
+	NO	(GMT – 03.00) Buenos Aires
+	PL	(GMT-03:00) Buenos Aires
+	RU	(GMT-03:00) – Буэнос-Айрес
+	SV	(GMT – 3:00) Buenos Aires
 
 TZ_AMERICA_GODTHAB
 	CS	(GMT-03:00) Grónsko
