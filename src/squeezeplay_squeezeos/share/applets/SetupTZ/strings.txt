@@ -783,34 +783,34 @@ TZ_ASIA_KATMANDU
 	SV	(GMT + 5:45) Katmandu
 
 TZ_ASIA_DHAKA
-	CS	(GMT+06:00) Astana, Dhaka
-	DA	(GMT+06:00) Astana, Dhaka
-	DE	(GMT+06:00) Astana, Dhaka
-	EN	(GMT+06:00) Astana, Dhaka
-	ES	(GMT+06:00) Astana, Dacca
-	FI	(GMT+06.00) Astana, Dhaka
-	FR	(GMT+06:00) Astana, Dhaka
-	IT	(GMT+06:00) Astana, Dhaka
-	NL	(GMT+06:00) Astana, Dhaka
-	NO	(GMT + 06.00) Astana, Dhaka
-	PL	(GMT+06:00) Astana, Dakka
-	RU	(GMT+06:00) – Астана, Дакка
-	SV	(GMT + 6:00) Astana, Dhaka
+	CS	(GMT+06:00) Dhaka
+	DA	(GMT+06:00) Dhaka
+	DE	(GMT+06:00) Dhaka
+	EN	(GMT+06:00) Dhaka
+	ES	(GMT+06:00) Dacca
+	FI	(GMT+06.00) Dhaka
+	FR	(GMT+06:00) Dhaka
+	IT	(GMT+06:00) Dhaka
+	NL	(GMT+06:00) Dhaka
+	NO	(GMT + 06.00) Dhaka
+	PL	(GMT+06:00) Dakka
+	RU	(GMT+06:00) – Дакка
+	SV	(GMT + 6:00) Dhaka
 
 TZ_ASIA_ALMATY
-	CS	(GMT+06:00) Almaty
-	DA	(GMT+06:00) Almaty
-	DE	(GMT+06:00) Almaty
-	EN	(GMT+06:00) Almaty
-	ES	(GMT+06:00) Almaty
-	FI	(GMT+06.00) Almaty
-	FR	(GMT+06:00) Almaty
-	IT	(GMT+06:00) Almaty
-	NL	(GMT+06:00) Alma-Atay
-	NO	(GMT + 06.00) Almaty
-	PL	(GMT+06:00) Ałma-Ata
-	RU	(GMT+06:00) – Алма-Ата
-	SV	(GMT + 6:00) Alma-ata
+	CS	(GMT+06:00) Almaty, Astana
+	DA	(GMT+06:00) Almaty, Astana
+	DE	(GMT+06:00) Almaty, Astana
+	EN	(GMT+06:00) Almaty, Astana
+	ES	(GMT+06:00) Almaty, Astana
+	FI	(GMT+06.00) Almaty, Astana
+	FR	(GMT+06:00) Almaty, Astana
+	IT	(GMT+06:00) Almaty, Astana
+	NL	(GMT+06:00) Alma-Atay, Astana
+	NO	(GMT + 06.00) Almaty, Astana
+	PL	(GMT+06:00) Ałma-Ata, Astana
+	RU	(GMT+06:00) – Алма-Ата, Астана
+	SV	(GMT + 6:00) Alma-ata, Astana
 
 TZ_ASIA_RANGOON
 	CS	(GMT+06:30) Rangoon
