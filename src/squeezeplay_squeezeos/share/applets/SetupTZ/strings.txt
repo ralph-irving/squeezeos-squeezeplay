@@ -17,20 +17,20 @@ TZ_TIMEZONE
 	RU	Часовой пояс
 	SV	Tidszon
 
-TZ_PACIFIC_APIA
-	CS	(GMT-11:00) ostrov Midway, Samoa
-	DA	(GMT-11:00) Midwayøerne, Samoa
-	DE	(GMT-11:00) Midway-Inseln, Samoa
-	EN	(GMT-11:00) Midway Island, Samoa
-	ES	(GMT-11:00) Isla Midway, Samoa
-	FI	(GMT-11.00) Midwaysaaret, Samoa
-	FR	(GMT-11:00) Iles Midway, Samoa
-	IT	(GMT-11:00) Isole Midway, Samoa
-	NL	(GMT-11:00) Midwayeilanden, Samoa
-	NO	(GMT-11:00) Midwayøyene, Samoa
-	PL	(GMT-11:00) Wyspa Midway, Samoa
-	RU	(GMT-11:00) – остров Мидуэй, Самоа
-	SV	(GMT – 11:00) Midwayöarna, Samoa
+TZ_PACIFIC_PAGO_PAGO
+	CS	(GMT-11:00) ostrov Midway, Americká Samoa
+	DA	(GMT-11:00) Midwayøerne, Amerikansk Samoa
+	DE	(GMT-11:00) Midway-Inseln, Amerikanischen Samoa-Inseln
+	EN	(GMT-11:00) Midway Island, American Samoa
+	ES	(GMT-11:00) Isla Midway, Samoa Americana
+	FI	(GMT-11.00) Midwaysaaret, Amerikan Samoa
+	FR	(GMT-11:00) Iles Midway, Samoa américaines
+	IT	(GMT-11:00) Isole Midway, Samoa americane
+	NL	(GMT-11:00) Midwayeilanden, Amerikaans Samoa
+	NO	(GMT-11:00) Midwayøyene, Amerikansk Samoa
+	PL	(GMT-11:00) Wyspa Midway, Samoa Amerykańskie
+	RU	(GMT-11:00) – остров Мидуэй, американское Самоа
+	SV	(GMT – 11:00) Midwayöarna, Amerikanska Samoa
 
 TZ_PACIFIC_HONOLULU
 	CS	(GMT-10:00) Havaj
@@ -1128,17 +1128,17 @@ TZ_PACIFIC_AUCKLAND
 	SV	(GMT + 12:00) Auckland, Wellington
 
 TZ_PACIFIC_TONGATAPU
-	CS	(GMT+13:00) Nuku'alofa
-	DA	(GMT+13:00) Nuku'alofa
-	DE	(GMT+13:00) Nuku'alofa
-	EN	(GMT+13:00) Nuku'alofa
-	ES	(GMT+13:00) Nuku'alofa
-	FI	(GMT+13.00) Nuku'alofa
-	FR	(GMT+13:00) Nuku'alofa
-	IT	(GMT+13:00) Nuku'alofa
-	NL	(GMT+13:00) Nuku'alofa
-	NO	(GMT + 13.00) Nuku'alofa
-	PL	(GMT+13:00) Nuku'alofa
-	RU	(GMT+13:00) – Нукуалофа
-	SV	(GMT + 13:00) Nukualofa
+	CS	(GMT+13:00) Nuku'alofa, Apia
+	DA	(GMT+13:00) Nuku'alofa, Apia
+	DE	(GMT+13:00) Nuku'alofa, Apia
+	EN	(GMT+13:00) Nuku'alofa, Apia
+	ES	(GMT+13:00) Nuku'alofa, Apia
+	FI	(GMT+13.00) Nuku'alofa, Apia
+	FR	(GMT+13:00) Nuku'alofa, Apia
+	IT	(GMT+13:00) Nuku'alofa, Apia
+	NL	(GMT+13:00) Nuku'alofa, Apia
+	NO	(GMT + 13.00) Nuku'alofa, Apia
+	PL	(GMT+13:00) Nuku'alofa, Apia
+	RU	(GMT+13:00) – Нукуалофа, Апиа
+	SV	(GMT + 13:00) Nukualofa, Apia
 

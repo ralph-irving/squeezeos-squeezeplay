@@ -25,7 +25,7 @@ oo.class(_M, Applet)
 -- Order is important here, these are ordered the same as the menu ordering
 --  in the SN DB.
 local timezones = {
-	{ strid = "TZ_PACIFIC_APIA", olson = "Pacific/Apia" },
+	{ strid = "TZ_PACIFIC_PAGO_PAGO", olson = "Pacific/Pago_Pago" },
 	{ strid = "TZ_PACIFIC_HONOLULU", olson = "Pacific/Honolulu" },
 	{ strid = "TZ_PACIFIC_PITCAIRN", olson = "Pacific/Pitcairn" },
 	{ strid = "TZ_AMERICA_ANCHORAGE", olson = "America/Anchorage" },
