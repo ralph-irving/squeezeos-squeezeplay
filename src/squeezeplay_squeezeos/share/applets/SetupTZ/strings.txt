@@ -377,20 +377,20 @@ TZ_ATLANTIC_AZORES
 	RU	(GMT-01:00) – Азорские острова
 	SV	(GMT – 1:00) Azorerna
 
-TZ_AFRICA_CASABLANCA
-	CS	(GMT) Casablanca, Monrovia
-	DA	(GMT) Casablanca, Monrovia
-	DE	(GMT) Casablanca, Monrovia
-	EN	(GMT) Casablanca, Monrovia
-	ES	(GMT) Casablanca, Monrovia
-	FI	(GMT) Casablanca, Monrovia
-	FR	(GMT) Casablanca, Monrovia
-	IT	(GMT) Casablanca, Monrovia
-	NL	(GMT) Casablanca, Monrovia
-	NO	(GMT) Casablanca, Monrovia
-	PL	(GMT) Casablanca, Monrowia
-	RU	(GMT) – Касабланка, Монровия
-	SV	(GMT) Casablanca, Monrovia
+TZ_AFRICA_MONROVIA
+	CS	(GMT) Monrovia
+	DA	(GMT) Monrovia
+	DE	(GMT) Monrovia
+	EN	(GMT) Monrovia
+	ES	(GMT) Monrovia
+	FI	(GMT) Monrovia
+	FR	(GMT) Monrovia
+	IT	(GMT) Monrovia
+	NL	(GMT) Monrovia
+	NO	(GMT) Monrovia
+	PL	(GMT) Monrowia
+	RU	(GMT) – Монровия
+	SV	(GMT) Monrovia
 
 TZ_EUROPE_LONDON
 	CS	(GMT) Greenwichský čas: Dublin, Edinburgh, Lisabon, Londýn
@@ -406,6 +406,21 @@ TZ_EUROPE_LONDON
 	PL	(GMT) Czas uniwersalny Greenwich: Dublin, Edynburg, Lizbona, Londyn
 	RU	(GMT) – время по Гринвичу: Дублин, Лиссабон, Лондон, Эдинбург
 	SV	(GMT) Greenwichtid: Dublin, Edinburgh, Lissabon, London
+
+TZ_AFRICA_CASABLANCA
+	CS	(GMT+01:00) Casablanca
+	DA	(GMT+01:00) Casablanca
+	DE	(GMT+01:00) Casablanca
+	EN	(GMT+01:00) Casablanca
+	ES	(GMT+01:00) Casablanca
+	FI	(GMT+01:00) Casablanca
+	FR	(GMT+01:00) Casablanca
+	IT	(GMT+01:00) Casablanca
+	NL	(GMT+01:00) Casablanca
+	NO	(GMT+01:00) Casablanca
+	PL	(GMT+01:00) Casablanca
+	RU	(GMT+01:00) – Касабланка
+	SV	(GMT+01:00) Casablanca
 
 TZ_AFRICA_LAGOS
 	CS	(GMT+01:00) Středozápadní Afrika
