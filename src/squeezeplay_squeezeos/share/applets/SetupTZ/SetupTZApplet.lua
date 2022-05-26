@@ -99,6 +99,7 @@ local timezones = {
 	{ strid = "TZ_ASIA_MAGADAN", olson = "Asia/Magadan" },
 	{ strid = "TZ_PACIFIC_NORFOLK", olson = "Pacific/Norfolk" },
 	{ strid = "TZ_PACIFIC_FIJI", olson = "Pacific/Fiji" },
+	{ strid = "TZ_PACIFIC_MAJURO", olson = "Pacific/Majuro" },
 	{ strid = "TZ_PACIFIC_AUCKLAND", olson = "Pacific/Auckland" },
 	{ strid = "TZ_PACIFIC_TONGATAPU", olson = "Pacific/Tongatapu" },
 }

@@ -1113,19 +1113,34 @@ TZ_PACIFIC_NORFOLK
 	SV	(GMT + 11:00) Norfolk Island
 
 TZ_PACIFIC_FIJI
-	CS	(GMT+12:00) Fidži, Kamčatka, Marshallovy ostrovy
-	DA	(GMT+12:00) Fiji, Kamchatka, Marshalløerne.
-	DE	(GMT+12:00) Fidschi, Kamtschatka, Marshallinseln
-	EN	(GMT+12:00) Fiji, Kamchatka, Marshall Is.
-	ES	(GMT+12:00) Fiji, Kamchatka, Islas Marshall
-	FI	(GMT+12.00) Fidži, Kamtšatka, Marshallinsaaret
-	FR	(GMT+12:00) Fidji, Kamchatka, Iles Marshall.
-	IT	(GMT+12:00) Figi, Kamchatka, Is. Marshal
-	NL	(GMT+12:00) Fiji, Kamtsjatka, Marshalleilanden.
-	NO	(GMT+12:00) Fiji, Kamtsjatka, Marshalløyene
-	PL	(GMT+12:00) Fidżi, Kamczatka, Wyspy Marshalla
-	RU	(GMT+12:00) – Фиджи, Камчатка, Маршалловы острова.
-	SV	(GMT + 12:00) Fiji, Kamtjatka, Marshallöarna
+	CS	(GMT+12:00) Fidži
+	DA	(GMT+12:00) Fiji
+	DE	(GMT+12:00) Fidschi
+	EN	(GMT+12:00) Fiji
+	ES	(GMT+12:00) Fiji
+	FI	(GMT+12.00) Fidži
+	FR	(GMT+12:00) Fidji
+	IT	(GMT+12:00) Figi
+	NL	(GMT+12:00) Fiji
+	NO	(GMT+12:00) Fiji
+	PL	(GMT+12:00) Fidżi
+	RU	(GMT+12:00) – Фиджи
+	SV	(GMT + 12:00) Fiji
+
+TZ_PACIFIC_MAJURO
+	CS	(GMT+12:00) Kamčatka, Marshallovy ostrovy
+	DA	(GMT+12:00) Kamchatka, Marshalløerne.
+	DE	(GMT+12:00) Kamtschatka, Marshallinseln
+	EN	(GMT+12:00) Kamchatka, Marshall Is.
+	ES	(GMT+12:00) Kamchatka, Islas Marshall
+	FI	(GMT+12.00) Kamtšatka, Marshallinsaaret
+	FR	(GMT+12:00) Kamchatka, Iles Marshall.
+	IT	(GMT+12:00) Kamchatka, Is. Marshal
+	NL	(GMT+12:00) Kamtsjatka, Marshalleilanden.
+	NO	(GMT+12:00) Kamtsjatka, Marshalløyene
+	PL	(GMT+12:00) Kamczatka, Wyspy Marshalla
+	RU	(GMT+12:00) – Камчатка, Маршалловы острова.
+	SV	(GMT + 12:00) Kamtjatka, Marshallöarna
 
 TZ_PACIFIC_AUCKLAND
 	CS	(GMT+12:00) Auckland, Wellington
