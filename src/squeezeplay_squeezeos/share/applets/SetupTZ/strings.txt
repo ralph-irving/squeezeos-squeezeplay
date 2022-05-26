@@ -903,19 +903,19 @@ TZ_ASIA_SINGAPORE
 	SV	(GMT + 8:00) Kuala Lumpur, Singapore
 
 TZ_ASIA_HONG_KONG
-	CS	(GMT+08:00) Peking, Chongqing, Hong Kong, Urumqi
-	DA	(GMT+08:00) Beijing, Chongqing, Hongkong, Urumqi
-	DE	(GMT+08:00) Peking, Chongqing, Hongkong, Urumqi
-	EN	(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi
-	ES	(GMT+08:00) Beijing, Chongqing, Hong Kong, Urumqi
-	FI	(GMT+08.00) Peking, Chongqing, Hongkong, Ürümqi
-	FR	(GMT+08:00) Pekin, Chongqing, Hong Kong, Urumqi
-	IT	(GMT+08:00) Pechino, Chongqing, Hong Kong, Urumqi
-	NL	(GMT+08:00) Peking, Tsjoengking, Hongkong, Ürümqi
-	NO	(GMT + 08.00) Beijing, Chongqing, Hongkong, Ürümqi
-	PL	(GMT+08:00) Pekin, Chongqing, Hongkong, Urumqi
-	RU	(GMT+08:00) – Пекин, Чунцин, Гонконг, Урумчи
-	SV	(GMT + 8:00) Beijing, Chongqing, Hong Kong, Urumqi
+	CS	(GMT+08:00) Peking, Chongqing, Hong Kong
+	DA	(GMT+08:00) Beijing, Chongqing, Hongkong
+	DE	(GMT+08:00) Peking, Chongqing, Hongkong
+	EN	(GMT+08:00) Beijing, Chongqing, Hong Kong
+	ES	(GMT+08:00) Beijing, Chongqing, Hong Kong
+	FI	(GMT+08.00) Peking, Chongqing, Hongkong
+	FR	(GMT+08:00) Pekin, Chongqing, Hong Kong
+	IT	(GMT+08:00) Pechino, Chongqing, Hong Kong
+	NL	(GMT+08:00) Peking, Tsjoengking, Hongkong
+	NO	(GMT + 08.00) Beijing, Chongqing, Hongkong
+	PL	(GMT+08:00) Pekin, Chongqing, Hongkong
+	RU	(GMT+08:00) – Пекин, Чунцин, Гонконг
+	SV	(GMT + 8:00) Beijing, Chongqing, Hong Kong
 
 TZ_ASIA_IRKUTSK
 	CS	(GMT+08:00) Irkutsk, Ulánbátar
