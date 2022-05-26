@@ -77,7 +77,7 @@ local timezones = {
 	{ strid = "TZ_ASIA_COLOMBO", olson = "Asia/Colombo" },
 	{ strid = "TZ_ASIA_KATMANDU", olson = "Asia/Katmandu" },
 	{ strid = "TZ_ASIA_DHAKA", olson = "Asia/Dhaka" },
-	{ strid = "TZ_ASIA_NOVOSIBIRSK", olson = "Asia/Novosibirsk" },
+	{ strid = "TZ_ASIA_ALMATY", olson = "Asia/Almaty" },
 	{ strid = "TZ_ASIA_RANGOON", olson = "Asia/Rangoon" },
 	{ strid = "TZ_ASIA_BANGKOK", olson = "Asia/Bangkok" },
 	{ strid = "TZ_ASIA_KRASNOYARSK", olson = "Asia/Krasnoyarsk" },
