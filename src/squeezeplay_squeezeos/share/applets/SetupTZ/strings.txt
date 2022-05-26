@@ -527,21 +527,6 @@ TZ_ASIA_JERUSALEM
 	RU	(GMT+02:00) – Иерусалим
 	SV	(GMT + 2:00) Jerusalem
 
-TZ_EUROPE_ISTANBUL
-	CS	(GMT+02:00) Atény, Istanbul, Minsk
-	DA	(GMT+02:00) Athen, Istanbul, Minsk
-	DE	(GMT+02:00) Athen, Istanbul, Minsk
-	EN	(GMT+02:00) Athens, Istanbul, Minsk
-	ES	(GMT+02:00) Atenas, Estambul, Minsk
-	FI	(GMT+02.00) Ateena, Istanbul, Minsk
-	FR	(GMT+02:00) Athènes, Istanbul, Minsk
-	IT	(GMT+02:00) Atene, Istanbul, Minsk
-	NL	(GMT+02:00) Athene, Istanbul, Minsk
-	NO	(GMT+02:00) Athen, Istanbul, Minsk
-	PL	(GMT+02:00) Ateny, Stambuł, Mińsk
-	RU	(GMT+02:00) – Афины, Стамбул, Минск
-	SV	(GMT + 2:00) Athen, Istanbul, Minsk
-
 TZ_EUROPE_HELSINKI
 	CS	(GMT+02:00) Helsinki, Kyjev, Riga, Sofia, Tallinn, Vilnius
 	DA	(GMT+02:00) Helsinki, Kiev, Riga, Sofia, Tallinn, Vilnius
@@ -573,19 +558,34 @@ TZ_AFRICA_CAIRO
 	SV	(GMT + 2:00) Kairo
 
 TZ_EUROPE_BUCHAREST
-	CS	(GMT+02:00) Bukurešť
-	DA	(GMT+02:00) Bukarest
-	DE	(GMT+02:00) Bukarest
-	EN	(GMT+02:00) Bucharest
-	ES	(GMT+02:00) Bucarest
-	FI	(GMT+02.00) Bukarest
-	FR	(GMT+02:00) Bucarest
-	IT	(GMT+02:00) Bucarest
-	NL	(GMT+02:00) Boekarest
-	NO	(GMT+02:00) Bucuresti
-	PL	(GMT+02:00) Bukareszt
-	RU	(GMT+02:00) – Будапешт
-	SV	(GMT + 2:00) Bukarest
+	CS	(GMT+02:00) Atény, Bukurešť
+	DA	(GMT+02:00) Athen, Bukarest
+	DE	(GMT+02:00) Athen, Bukarest
+	EN	(GMT+02:00) Athens, Bucharest
+	ES	(GMT+02:00) Atenas, Bucarest
+	FI	(GMT+02.00) Ateena, Bukarest
+	FR	(GMT+02:00) Athènes, Bucarest
+	IT	(GMT+02:00) Atene, Bucarest
+	NL	(GMT+02:00) Athene, Boekarest
+	NO	(GMT+02:00) Athen, Bucuresti
+	PL	(GMT+02:00) Ateny, Bukareszt
+	RU	(GMT+02:00) – Афины, Будапешт
+	SV	(GMT + 2:00) Athen, Bukarest
+
+TZ_EUROPE_ISTANBUL
+	CS	(GMT+03:00) Istanbul
+	DA	(GMT+03:00) Istanbul
+	DE	(GMT+03:00) Istanbul
+	EN	(GMT+03:00) Istanbul
+	ES	(GMT+03:00) Estambul
+	FI	(GMT+03.00) Istanbul
+	FR	(GMT+03:00) Istanbul
+	IT	(GMT+03:00) Istanbul
+	NL	(GMT+03:00) Istanbul
+	NO	(GMT+03:00) Istanbul
+	PL	(GMT+03:00) Stambuł
+	RU	(GMT+03:00) – Стамбул
+	SV	(GMT + 3:00) Istanbul
 
 TZ_AFRICA_NAIROBI
 	CS	(GMT+03:00) Nairobi
@@ -618,19 +618,19 @@ TZ_ASIA_RIYADH
 	SV	(GMT + 3:00) Kuwait, Riyadh
 
 TZ_EUROPE_MOSCOW
-	CS	(GMT+03:00) Moskva, Sankt Petěrburg, Volgograd
-	DA	(GMT+03:00) Moskva, Skt. Petersborg, Volgograd
-	DE	(GMT+03:00) Moskau, St. Petersburg, Volgograd
-	EN	(GMT+03:00) Moscow, St. Petersburg, Volgograd
-	ES	(GMT+03:00) Moscú, San Petersburgo, Volgogrado
-	FI	(GMT+03.00) Moskova, Pietari, Volgograd
-	FR	(GMT+03:00) Moscou, Saint Pétersbourg, Volgograd
-	IT	(GMT+03:00) Mosca, S. Pietroburgo, Volgograd
-	NL	(GMT+03:00) Moskou, St. Petersburg, Wolgograd
-	NO	(GMT+03:00) Moskva, St. Petersburg, Volgograd
-	PL	(GMT+03:00) Moskwa, St. Petersburg, Wołgograd
-	RU	(GMT+03:00) – Москва, Санкт-Петербург, Волгоград
-	SV	(GMT + 3:00) Moskva, Sankt Petersburg, Volgograd
+	CS	(GMT+03:00) Moskva, Sankt Petěrburg, Volgograd, Minsk
+	DA	(GMT+03:00) Moskva, Skt. Petersborg, Volgograd, Minsk
+	DE	(GMT+03:00) Moskau, St. Petersburg, Volgograd, Minsk
+	EN	(GMT+03:00) Moscow, St. Petersburg, Volgograd, Minsk
+	ES	(GMT+03:00) Moscú, San Petersburgo, Volgogrado, Minsk
+	FI	(GMT+03.00) Moskova, Pietari, Volgograd, Minsk
+	FR	(GMT+03:00) Moscou, Saint Pétersbourg, Volgograd, Minsk
+	IT	(GMT+03:00) Mosca, S. Pietroburgo, Volgograd, Minsk
+	NL	(GMT+03:00) Moskou, St. Petersburg, Wolgograd, Minsk
+	NO	(GMT+03:00) Moskva, St. Petersburg, Volgograd, Minsk
+	PL	(GMT+03:00) Moskwa, St. Petersburg, Wołgograd, Mińsk
+	RU	(GMT+03:00) – Москва, Санкт-Петербург, Волгоград, Минск
+	SV	(GMT + 3:00) Moskva, Sankt Petersburg, Volgograd, Minsk
 
 TZ_ASIA_BAGHDAD
 	CS	(GMT+03:00) Bagdád
