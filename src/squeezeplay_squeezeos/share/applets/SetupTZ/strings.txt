@@ -302,7 +302,7 @@ TZ_AMERICA_BUENOS_AIRES
 	RU	(GMT-03:00) – Буэнос-Айрес
 	SV	(GMT – 3:00) Buenos Aires
 
-TZ_AMERICA_GODTHAB
+TZ_AMERICA_NUUK
 	CS	(GMT-03:00) Grónsko
 	DA	(GMT-03:00) Grønland
 	DE	(GMT-03:00) Grönland
@@ -662,7 +662,7 @@ TZ_ASIA_TEHRAN
 	RU	(GMT+03:30) – Тегеран
 	SV	(GMT + 3:30) Teheran
 
-TZ_ASIA_MUSCAT
+TZ_ASIA_DUBAI
 	CS	(GMT+04:00) Abu Dhabi, Maskat
 	DA	(GMT+04:00) Abu Dhabi, Muscat
 	DE	(GMT+04:00) Abu Dhabi, Maskat
@@ -737,7 +737,7 @@ TZ_ASIA_YEKATERINBURG
 	RU	(GMT+05:00) – Екатеринбург
 	SV	(GMT + 5:00) Jekaterinburg
 
-TZ_ASIA_CALCUTTA
+TZ_ASIA_KOLKATA
 	CS	(GMT+05:30) Čennaí, Kalkata, Bombaj, New Delhi
 	DA	(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi
 	DE	(GMT+05:30) Chennai, Kalkutta, Mumbai, New Delhi
@@ -767,7 +767,7 @@ TZ_ASIA_COLOMBO
 	RU	(GMT+05:30) – Шри Джаяварденепура
 	SV	(GMT + 5:30) Sri Jayawardenepura
 
-TZ_ASIA_KATMANDU
+TZ_ASIA_KATHMANDU
 	CS	(GMT+05:45) Káthmandú
 	DA	(GMT+05:45) Kathmandu
 	DE	(GMT+05:45) Kathmandu
@@ -812,7 +812,7 @@ TZ_ASIA_ALMATY
 	RU	(GMT+06:00) – Алма-Ата, Астана
 	SV	(GMT + 6:00) Alma-ata, Astana
 
-TZ_ASIA_RANGOON
+TZ_ASIA_YANGON
 	CS	(GMT+06:30) Rangoon
 	DA	(GMT+06:30) Rangoon
 	DE	(GMT+06:30) Rangun
