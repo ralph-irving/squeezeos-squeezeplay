@@ -281,15 +281,17 @@ function step7(self)
 	log:info("step7")
 
 	-- Once here, network setup is complete
-	self:_setupDone(true, false)
+	-- self:_setupDone(true, false)
+	-- Pretend registration has been completed.
+	self:_setupDone(true, true)
 
 	-- Bug 12786: Selecting a Network, then backing out
 	--  and re-selecting will cause network errors
 	self.registerRequest = false
 
 	--might be coming into this from a restart, so re-disable
-	self:_disableNormalEscapeMechanisms()
-	self:_addReturnToSetupToHomeMenu()
+	-- self:_disableNormalEscapeMechanisms()
+	-- self:_addReturnToSetupToHomeMenu()
 
 	-- Find squeezenetwork server
 	local squeezenetwork = false
@@ -300,14 +302,14 @@ function step7(self)
 	end
 
 	if not squeezenetwork then
-		log:error("no SqueezeNetwork instance")
+		log:info("no SqueezeNetwork instance")
 		step8point5(self, squeezenetwork)
 		return
 	end
 
 	local settings = self:getSettings()
 	if settings.registerDone then
-		log:error("SqueezeNetwork registration complete")
+		log:info("SqueezeNetwork registration complete")
 		step8point5(self, squeezenetwork)
 		return
 	end

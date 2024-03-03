@@ -45,14 +45,14 @@ end
 function defaultSettings(meta)
 	return {
 		[ "setupDone" ] = false,
-		[ "registerDone" ] = false,
+		[ "registerDone" ] = true,
 	}
 end
 
 
 function registerApplet(meta)
 	meta:registerService("startSetup")
-	meta:registerService("startRegister")
+	-- meta:registerService("startRegister")
 	meta:registerService("isSetupDone")
 end
 
