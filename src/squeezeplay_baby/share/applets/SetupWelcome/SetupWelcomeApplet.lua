@@ -226,8 +226,8 @@ function step7(self)
 	self.registerRequest = false
 
 	--might be coming into this from a restart, so re-disable
-	-- self:_disableNormalEscapeMechanisms()
-	-- self:_addReturnToSetupToHomeMenu()
+	self:_disableNormalEscapeMechanisms()
+	self:_addReturnToSetupToHomeMenu()
 
 	-- Find squeezenetwork server
 	local squeezenetwork = false
