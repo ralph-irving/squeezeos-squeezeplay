@@ -303,6 +303,12 @@ function step7(self)
 
 	if not squeezenetwork then
 		log:info("no SqueezeNetwork instance")
+		for name, server in slimServer:iterate() do
+			if server then
+				squeezenetwork = server
+				break
+			end
+		end
 		step8point5(self, squeezenetwork)
 		return
 	end
@@ -501,7 +507,7 @@ end
 
 function step8point5(self, squeezenetwork)
 	log:info("step8point5")
-	assert(squeezenetwork)
+	-- assert(squeezenetwork)
 
 	local player = appletManager:callService("getCurrentPlayer")
 	if player then
@@ -519,15 +525,17 @@ end
 
 function step8point7(self, squeezenetwork)
 	log:info("step8point7")
-	assert(squeezenetwork)
+	-- assert(squeezenetwork)
 
 	-- if player is still not connected, now connect to SN
 	local player = appletManager:callService("getCurrentPlayer")
-	assert(player)
+	-- assert(player)
 
-	if not player:getSlimServer() then
-		log:info("connect ", player, " to ", squeezenetwork)
-		player:connectToServer(squeezenetwork)
+	if player then
+		if not player:getSlimServer() then
+			log:info("connect ", player, " to ", squeezenetwork)
+			player:connectToServer(squeezenetwork)
+		end
 	end
 
 	self:step9()
