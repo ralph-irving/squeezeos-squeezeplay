@@ -99,6 +99,7 @@ function settingsShow(self)
 		tostring(self:string("ABOUT_COMMUNITY")),
 		"     Ralph Irving",
 		"     Martin Williams",
+		"     Dan Zenchelsky",
 		"",
 		"",
 		tostring(self:string("ABOUT_COPYRIGHT")),
