@@ -32,7 +32,7 @@ AC_ARG_ENABLE(sdltest, [  --disable-sdltest       Do not try to compile and run 
     fi
   fi
 
-  if test "x$prefix" != xNONE; then
+  if test "x$prefix" != xNONE && test "$cross_compiling" != yes; then
     PATH="$prefix/bin:$prefix/usr/bin:$PATH"
   fi
   AC_PATH_PROG(SDL_CONFIG, sdl-config, no, [$PATH])
