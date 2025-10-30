@@ -115,7 +115,7 @@ function _saveLogconf()
 	for name,cat in pairs(logger.categories()) do
 		local level = cat:getLevel()
 
-		if level == "INFO" then
+		if level == "WARN" then
 			logconf.category[name] = nil
 		else
 			logconf.category[name] = level
