@@ -34,7 +34,7 @@ typedef unsigned int bool;
 #define true 1
 #define false !true
 
-#define JIVE_FRAME_RATE @ FRAME_RATE 20
+#define JIVE_FRAME_RATE @ FRAME_RATE 30
 
 #define JIVE_XY_NIL @ XY_NIL -1
 #define JIVE_WH_NIL @ WH_NIL 65535

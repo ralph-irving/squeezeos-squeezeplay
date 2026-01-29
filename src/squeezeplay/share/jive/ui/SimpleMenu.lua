@@ -492,6 +492,9 @@ Efficiently replaces the current menu items, with I<items>.
 =cut
 --]]
 function setItems(self, items)
+	-- large menu updates are memory intensive
+	collectgarbage("collect")
+
 	self.items = items
 
 	Menu.setItems(self, self.items, #self.items)

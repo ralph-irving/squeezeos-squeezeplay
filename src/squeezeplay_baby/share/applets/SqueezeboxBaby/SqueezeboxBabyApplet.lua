@@ -139,6 +139,11 @@ function init(self)
 	-- read uuid, serial and revision
 	parseCpuInfo(self)
 
+	-- Optimize ondemand governor for battery-aware responsiveness
+	log:info("Tuning ondemand governor for responsiveness...")
+	os.execute("echo 45 > /sys/devices/system/cpu/cpufreq/ondemand/up_threshold 2> /dev/null")
+	os.execute("echo 20000 > /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 2> /dev/null")
+
 	System:init({
 		machine = "baby",
 		uuid = self._uuid,

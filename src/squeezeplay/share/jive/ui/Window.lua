@@ -105,7 +105,7 @@ local LAYOUT_NONE             = jive.ui.LAYOUT_NONE
 
 local appletManager           = require("jive.AppletManager")
 
-local HORIZONTAL_PUSH_TRANSITION_DURATION = 500
+local HORIZONTAL_PUSH_TRANSITION_DURATION = 200
 
 -- our class
 module(...)
@@ -326,6 +326,9 @@ Show this window, adding it to the top of the window stack. The I<transition> is
 =cut
 --]]
 function show(self, transition)
+	-- keep on top of memory usage before pushing a new window
+	collectgarbage("collect")
+
 	local stack = Framework.windowStack
 
 	local idx = 1

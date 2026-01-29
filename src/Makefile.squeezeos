@@ -7,7 +7,7 @@ TOPDIR = $(dir ${TOPSRCDIR})
 export BUILDDIR=$(TOPDIR)build
 export PREFIX=${BUILDDIR}/usr
 
-export CFLAGS=-I${PREFIX}/include -I${SRCDIR}/squeezeplay/src/ui -Os
+export CFLAGS=-I${PREFIX}/include -I${SRCDIR}/squeezeplay/src/ui -O2
 export LDFLAGS=-L${PREFIX}/lib
 
 TARGET=arm-926ejs-linux-gnueabi
