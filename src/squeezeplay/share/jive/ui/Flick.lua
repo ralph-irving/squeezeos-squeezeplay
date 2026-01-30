@@ -126,6 +126,9 @@ function stopFlick(self, byFinger)
 end
 
 
+-- Maximum number of points to track for flick velocity calculation
+local FLICK_MAX_POINTS = 20
+
 function updateFlickData(self, mouseEvent)
 	local x, y = mouseEvent:getMouse()
 	local ticks = mouseEvent:getTicks()
@@ -136,53 +139,92 @@ function updateFlickData(self, mouseEvent)
 	end
 
 	--hack until reason for false "far out of range" ticks is happening
-
-	if #self.flickData.points >=1 then
-		local previousTicks = self.flickData.points[#self.flickData.points].ticks
-		if math.abs(ticks - previousTicks ) > 10000 then
-			log:error("Erroneous tick value occurred, ignoring : ", ticks, "  after previuos tick value of: ", previousTicks)
+	local fd = self.flickData
+	if fd.count >= 1 then
+		-- Get the most recent point using circular buffer index
+		local prevIdx = ((fd.nextIdx - 2) % FLICK_MAX_POINTS) + 1
+		local previousTicks = fd.points[prevIdx] and fd.points[prevIdx].ticks or 0
+		if math.abs(ticks - previousTicks) > 10000 then
+			log:error("Erroneous tick value occurred, ignoring : ", ticks, "  after previous tick value of: ", previousTicks)
 			return
 		end
 	end
 
-	--use last flick data collection time as initital scroll time to avoid jerky delay when afterscroll starts 
+	--use last flick data collection time as initial scroll time to avoid jerky delay when afterscroll starts
 	self.flickInitialScrollT = Framework:getTicks()
 
-	table.insert(self.flickData.points, {y = y, ticks = ticks})
-
-	--remove any more than 20 points
-	if #self.flickData.points >= 20 then
-		--only keep last 20 values (number was come up by trial and error, flick and quick stopping, quick flicks, multi-speed flicks)
-		-- I found that having this number lower (less averging) made the afterscroll "jump"
-		-- also only collect events that occurred in the last 100ms
-		table.remove(self.flickData.points, 1)
-	end
-
+	-- Use circular buffer: overwrite oldest entry instead of shifting array
+	local idx = fd.nextIdx
+	fd.points[idx] = {y = y, ticks = ticks}
+	fd.nextIdx = (idx % FLICK_MAX_POINTS) + 1
+	fd.count = math.min(fd.count + 1, FLICK_MAX_POINTS)
 end
 
 function resetFlickData(self)
 	self.flickData.points = {}
+	self.flickData.nextIdx = 1
+	self.flickData.count = 0
+end
+
+-- Helper: get the oldest point in the circular buffer
+local function _getOldestPoint(fd)
+	if fd.count == 0 then return nil end
+	if fd.count < FLICK_MAX_POINTS then
+		return fd.points[1]
+	end
+	return fd.points[fd.nextIdx]  -- nextIdx points to the oldest entry when full
+end
+
+-- Helper: get the newest point in the circular buffer
+local function _getNewestPoint(fd)
+	if fd.count == 0 then return nil end
+	local idx = ((fd.nextIdx - 2) % FLICK_MAX_POINTS) + 1
+	return fd.points[idx]
+end
+
+-- Helper: get point at offset from oldest (0 = oldest, count-1 = newest)
+local function _getPointAt(fd, offset)
+	if offset < 0 or offset >= fd.count then return nil end
+	if fd.count < FLICK_MAX_POINTS then
+		return fd.points[offset + 1]
+	end
+	local idx = ((fd.nextIdx + offset - 1) % FLICK_MAX_POINTS) + 1
+	return fd.points[idx]
 end
 
 function getFlickSpeed(self, itemHeight, mouseUpT)
-	--remove stale points
-	if #self.flickData.points > 1 then
-		local staleRemoved = false
-		repeat
-			if self.flickData.points[#self.flickData.points].ticks - self.flickData.points[1].ticks > FLICK_STALE_TIME then
-				table.remove(self.flickData.points, 1)
-			else
-				staleRemoved = true
-			end
-		until staleRemoved
-	end
+	local fd = self.flickData
 
-	if not self.flickData.points or #self.flickData.points < 2 then
+	if fd.count < 2 then
 		return nil
 	end
 
+	-- Remove stale points by adjusting count (no table operations needed)
+	local newest = _getNewestPoint(fd)
+	while fd.count > 1 do
+		local oldest = _getOldestPoint(fd)
+		if newest.ticks - oldest.ticks > FLICK_STALE_TIME then
+			-- "Remove" oldest by advancing the start pointer
+			if fd.count < FLICK_MAX_POINTS then
+				-- Shift the start for partial buffers
+				table.remove(fd.points, 1)
+			else
+				fd.nextIdx = (fd.nextIdx % FLICK_MAX_POINTS) + 1
+			end
+			fd.count = fd.count - 1
+		else
+			break
+		end
+	end
+
+	if fd.count < 2 then
+		return nil
+	end
+
+	newest = _getNewestPoint(fd)
+
 	if mouseUpT then
-		local delayUntilUp = mouseUpT - self.flickData.points[#self.flickData.points].ticks
+		local delayUntilUp = mouseUpT - newest.ticks
 		if delayUntilUp > 25 then
 			-- a long delay since last point is one indication of a finger stop since lower level duplicate suppression may be in effect
 			return nil
@@ -192,25 +234,24 @@ function getFlickSpeed(self, itemHeight, mouseUpT)
 	--finger stop checking
 	-- finger may have stopped after a drag, but the averaging might make it appear that a flick occurred
 	local recentPoints = 5
-	if #self.flickData.points > recentPoints then
-		local recentIndex = 1 + #self.flickData.points - recentPoints
-		local recentDistance = self.flickData.points[#self.flickData.points].y - self.flickData.points[recentIndex].y
+	if fd.count > recentPoints then
+		local recentPoint = _getPointAt(fd, fd.count - recentPoints)
+		local recentDistance = newest.y - recentPoint.y
 
 		if math.abs(recentDistance) <= FLICK_RECENT_THRESHOLD_DISTANCE then
 			log:debug("Returning nil, didn't surpase 'recent' threshold distance: ", recentDistance)
 			return nil
 		end
-
 	end
 
-	local distance = self.flickData.points[#self.flickData.points].y - self.flickData.points[1].y
-	local time = self.flickData.points[#self.flickData.points].ticks - self.flickData.points[1].ticks
+	local oldest = _getOldestPoint(fd)
+	local distance = newest.y - oldest.y
+	local time = newest.ticks - oldest.ticks
 
 	--speed = pixels/ms
 	local speed = distance/time
 
-
-	log:debug("Flick info: speed: ", speed, "  distance: ", distance, "  time: ", time )
+	log:debug("Flick info: speed: ", speed, "  distance: ", distance, "  time: ", time)
 
 	local direction = speed >= 0 and -1 or 1
 	return math.abs(speed), direction
@@ -334,7 +375,8 @@ function __init(self, parent)
 	obj.flickData = {}
 	obj.flickData.points = {}
 
-	obj.flickTimer = Timer(25,
+	-- Timer interval: 33ms = ~30fps (optimized for low-power devices like Squeezebox Radio)
+	obj.flickTimer = Timer(33,
 			       function()
 			                obj:flick()
 			       end)

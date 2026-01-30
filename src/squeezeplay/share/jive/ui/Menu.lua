@@ -719,48 +719,64 @@ local function _eventHandler(self, event)
 
 					if chiralValue then
 						if self.mouseState ~= MOUSE_CHIRAL then
-							--clear old chiral values
+							--clear old chiral values and initialize circular buffer
 							self.lastChirals = {}
-
+							self.chiralNextIdx = 1
+							self.chiralCount = 0
+							-- Running totals for efficient averaging
+							self.chiralShortTotal = 0
+							self.chiralShortCount = 0
+							self.chiralLongTotal = 0
+							self.chiralLongCount = 0
 						else
-							--did direction change, if clear old values
-							local lastChiral = self.lastChirals[#self.lastChirals].value
-							if lastChiral * chiralValue < 1 then
-								--direction shift
-								self.lastChirals = {}
+							--did direction change, if so clear old values
+							if self.chiralCount > 0 then
+								local prevIdx = ((self.chiralNextIdx - 2) % 50) + 1
+								local lastChiral = self.lastChirals[prevIdx]
+								if lastChiral and lastChiral.value * chiralValue < 1 then
+									--direction shift - reset buffer
+									self.lastChirals = {}
+									self.chiralNextIdx = 1
+									self.chiralCount = 0
+									self.chiralShortTotal = 0
+									self.chiralShortCount = 0
+									self.chiralLongTotal = 0
+									self.chiralLongCount = 0
+								end
 							end
 						end
 
 						self.mouseState = MOUSE_CHIRAL
 
-
-						--moving average for smoothing
+						--moving average for smoothing using circular buffer
 						local now = event:getTicks()
-						table.insert(self.lastChirals, {value = chiralValue, ticks = now } )
+						local CHIRAL_MAX_SAMPLES = 50
 
+						-- Use circular buffer: overwrite oldest entry
+						local idx = self.chiralNextIdx
+						self.lastChirals[idx] = {value = chiralValue, ticks = now}
+						self.chiralNextIdx = (idx % CHIRAL_MAX_SAMPLES) + 1
+						self.chiralCount = math.min(self.chiralCount + 1, CHIRAL_MAX_SAMPLES)
 
-						local sampleCount = 300
-						if #self.lastChirals >= sampleCount then
-							table.remove(self.lastChirals, 1)
-						end
-
+						-- Calculate averages by scanning recent points
+						-- (Running totals are complex with age-based filtering, so we scan but with reduced sample count)
 						local chiralTotal = 0
 						local chiralPoints = 0
 						local longChiralTotal = 0
 						local longChiralPoints = 0
-						for i, entry in ipairs(self.lastChirals) do
-							local age = now - entry.ticks
---							log:error("age: ", age)
-
-							if age < 500 then
-								--only include values from last few moments
-								chiralTotal = chiralTotal + entry.value
-								chiralPoints = chiralPoints + 1
-							end
-							if age < 3000 then
-								--only include values from last few moments
-								longChiralTotal = longChiralTotal + entry.value
-								longChiralPoints = longChiralPoints + 1
+						for j = 0, self.chiralCount - 1 do
+							local entryIdx = ((self.chiralNextIdx - self.chiralCount + j - 1) % CHIRAL_MAX_SAMPLES) + 1
+							local entry = self.lastChirals[entryIdx]
+							if entry then
+								local age = now - entry.ticks
+								if age < 500 then
+									chiralTotal = chiralTotal + entry.value
+									chiralPoints = chiralPoints + 1
+								end
+								if age < 3000 then
+									longChiralTotal = longChiralTotal + entry.value
+									longChiralPoints = longChiralPoints + 1
+								end
 							end
 						end
 --						log:error("longChiralPoints ", longChiralPoints)
@@ -781,10 +797,11 @@ local function _eventHandler(self, event)
 						local byItemOnly = false
 						local threshold1 = 4
 						local threshold2 = 5.5
-						if longChiralPoints > 200 and math.abs(longPixels) > threshold2 and math.abs(pixels) > 1.5 then
+						-- Thresholds adjusted for 50-sample buffer (was 300): 200->33, 150->25
+						if longChiralPoints > 33 and math.abs(longPixels) > threshold2 and math.abs(pixels) > 1.5 then
 							dragAmountY = direction * math.abs(pixels) * math.pow(math.abs(longPixels/threshold2), 5)
 							byItemOnly = true
-						elseif longChiralPoints > 150 and math.abs(longPixels) > threshold1 and math.abs(pixels) > 2 then
+						elseif longChiralPoints > 25 and math.abs(longPixels) > threshold1 and math.abs(pixels) > 2 then
 							dragAmountY = direction * math.abs(pixels) * math.pow(math.abs(longPixels/threshold1), 3)
 							byItemOnly = false
 						else
@@ -1581,10 +1598,21 @@ function _updateWidgets(self)
 	local indexSize = (max - min) + 1
 
 
-	-- create index list
-	local indexList = {}
-	for i = min,max do
-		indexList[#indexList + 1] = i
+	-- create index list (reuse cached array to avoid garbage collection)
+	local indexList = self._indexListCache
+	if not indexList then
+		indexList = {}
+		self._indexListCache = indexList
+	end
+	-- Clear any stale entries and populate with current indices
+	local j = 1
+	for i = min, max do
+		indexList[j] = i
+		j = j + 1
+	end
+	-- Clear any extra entries from previous larger lists
+	for k = j, #indexList do
+		indexList[k] = nil
 	end
 
 	local lastSelected = self._lastSelected

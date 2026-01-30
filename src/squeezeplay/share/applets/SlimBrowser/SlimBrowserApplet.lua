@@ -479,6 +479,8 @@ local function _artworkItem(step, item, group, menuAccel)
 	local iconId = item["icon-id"] or item["icon"]
 
 	if iconId then
+		-- Clear cached state since we're setting real artwork
+		group._iconNoArtwork = nil
 		if menuAccel and not _server:artworkThumbCached(iconId, iconSize) then
 			-- Don't load artwork while accelerated
 			_server:cancelArtwork(icon)
@@ -487,6 +489,8 @@ local function _artworkItem(step, item, group, menuAccel)
 			_server:fetchArtwork(iconId, icon, iconSize)
 		end
 	elseif item["trackType"] == 'radio' and item["params"] and item["params"]["track_id"] then
+		-- Clear cached state since we're setting real artwork
+		group._iconNoArtwork = nil
 		if menuAccel and not _server:artworkThumbCached(item["params"]["track_id"], iconSize) then
 			-- Don't load artwork while accelerated
 			_server:cancelArtwork(icon)
@@ -644,12 +648,14 @@ local function _decoratedLabel(group, labelStyle, item, step, menuAccel)
 
 		group:setWidgetValue("text", item.text)
 
-		if showIcons then
+	if showIcons then
 			--set "no artwork" unless it has already been set (avoids high cpu looping)
-			local iconWidget = group:getWidget('icon')
-			if iconWidget then
-				if group:getWidget('icon'):getStyle() ~= 'icon_no_artwork' then
+			-- Cache state on group to avoid repeated getStyle() string comparisons
+			if not group._iconNoArtwork then
+				local iconWidget = group:getWidget('icon')
+				if iconWidget then
 					group:setWidget('icon', Icon('icon_no_artwork'))
+					group._iconNoArtwork = true
 				end
 			end
 		end
