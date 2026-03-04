@@ -505,6 +505,15 @@ function notify_playerCurrent(self, player)
 		player:getId(),
 		{ 'date', 'subscribe:3600' }
 	)
+
+	-- Register the device's timezone with the server so it can be used
+	-- when scheduling alarms. This is stored as a per-player preference
+	-- and read back by the server when building alarm menus.
+	local tz = squeezeos.getTimezone()
+	if tz then
+		log:info('Registering timezone with server: ', tz)
+		player:call({'playerpref', 'timezone', tz})
+	end
 end
 
 
