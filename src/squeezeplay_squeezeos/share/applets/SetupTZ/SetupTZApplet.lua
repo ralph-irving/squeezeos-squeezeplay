@@ -7,6 +7,7 @@ local string                 = require("string")
 local squeezeos              = require("squeezeos_bsp")
 
 local Applet                 = require("jive.Applet")
+local Player                 = require("jive.slim.Player")
 local System                 = require("jive.System")
 local RadioGroup             = require("jive.ui.RadioGroup")
 local RadioButton            = require("jive.ui.RadioButton")
@@ -126,6 +127,13 @@ function settingsShow(self, menuItem)
 					local success,err = squeezeos.setTimezone(tzdata.olson)
 					if not success then
 						log:warn("setTimezone() failed: ", err)
+					else
+						-- Keep the server's per-player timezone preference in sync
+						-- so alarm scheduling uses the correct timezone.
+						local player = Player:getLocalPlayer()
+						if player then
+							player:call({'playerpref', 'timezone', tzdata.olson})
+						end
 					end
 				end,
 				enableme
