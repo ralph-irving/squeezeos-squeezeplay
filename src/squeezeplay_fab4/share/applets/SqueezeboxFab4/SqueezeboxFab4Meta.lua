@@ -29,10 +29,10 @@ function defaultSettings(meta)
 		alsaPlaybackDevice = "default",
 		alsaPlaybackBufferTime = 20000,
 		alsaPlaybackPeriodCount = 2,
-		alsaEffectsDevice = "plughw:2,0",
-		alsaEffectsBufferTime = 20000,
-		alsaEffectsPeriodCount = 2,
-		alsaSampleSize = 24,
+		alsaEffectsDevice = "plugwm8974",
+		alsaEffectsBufferTime = 30000,
+		alsaEffectsPeriodCount = 3,
+		alsaSampleSize = 16,
 	}
 end
 
@@ -48,7 +48,7 @@ function upgradeSettings(meta, settings)
 
 	-- fix buffer time
 	settings.alsaPlaybackBufferTime = 20000
-	settings.alsaEffectsBufferTime = 20000
+	settings.alsaEffectsBufferTime = 30000
 
 	return settings
 end
