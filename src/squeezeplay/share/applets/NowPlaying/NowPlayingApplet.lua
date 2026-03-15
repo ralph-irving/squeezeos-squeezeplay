@@ -412,7 +412,7 @@ end
 
 function _setVolumeSliderStyle(self)
 	if self.volSlider then
-		if self.player:getDigitalVolumeControl() == 0 then
+		if self.player:useVolumeControl() == 0 then
 			log:info('disable volume UI in NP')
 			self.volSlider:setStyle('npvolumeB_disabled')
 			self.volSlider:setEnabled(false)
