@@ -173,7 +173,7 @@ function _updateVolume(self, mute, directSet, noAccel, minAccelDelta)
 	--  at 100% to allow IR Blaster (a server side extra) to work properly.
 	-- Catch volume IR commands received by Fab4
 	-- Currently the only SP based player supporting IR Blaster is Fab4
-	if self.player and (self.player:getDigitalVolumeControl() == 0) and (self.player:getModel() == "fab4") then
+	if self.player and (self.player:useVolumeControl() == 0) and (self.player:getModel() == "fab4") then
 		-- Send command directly to server w/o updating local volume
 		Player.volume(self.player, 100 + self.delta, true)
 	end
