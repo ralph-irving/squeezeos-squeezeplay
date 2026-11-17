@@ -1,0 +1,19 @@
+#
+# The two letter codes are defined by ISO 639-1
+# http://en.wikipedia.org/wiki/List_of_ISO_639_codes
+
+AUTOSWITCH_TITLE
+	EN	Cable/Wifi Auto Switch
+	NL	Automatisch kabel/wifi
+
+AUTOSWITCH_HELP
+	EN	When an Ethernet cable is plugged in, switch to the wired network and turn wifi off. When the cable is unplugged, reconnect to the last wifi network. Cable detection is paused while running on battery.
+	NL	Als er een netwerkkabel wordt aangesloten, schakel dan over op de kabel en zet de wifi uit. Als de kabel wordt losgekoppeld, maak dan weer verbinding met het laatste wifi-netwerk. Op batterij wordt niet naar een kabel gekeken.
+
+AUTOSWITCH_ENABLE
+	EN	Switch automatically
+	NL	Automatisch wisselen
+
+AUTOSWITCH_UNSUPPORTED
+	EN	This device needs both a wired and a wireless network interface for this feature.
+	NL	Voor deze functie heeft dit apparaat zowel een netwerkaansluiting voor de kabel als wifi nodig.
