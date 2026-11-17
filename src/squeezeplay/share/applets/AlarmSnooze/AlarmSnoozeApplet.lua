@@ -438,10 +438,8 @@ function _alarmDismiss(self)
 		self.fallbackAlarmTimeout:stop()
 	end
 	-- The local fallback tone is not alarm music worth keeping: stop it (and
-	-- restore the volume) only when it is actually sounding.
-	if self.toneActive then
-		self:_stopTone()
-	end
+	-- restore the volume) only while it is still what is playing.
+	self:_stopTone()
 	self.alarmInProgress = nil
 	self:_stopSnoozeTimer()
 	self:_stopDecodeStatePoller()
@@ -515,10 +513,19 @@ function _stopFade(self)
 end
 
 
+-- True while our local tone is what is playing. A server stream (e.g. the
+-- alarm playlist recovering) replaces the file source, after which the tone
+-- and its volume are no longer ours to stop or restore.
+function _ownsTone(self)
+	return self.toneActive and self.localPlayer
+		and self.localPlayer.playback:getSource() == "file"
+end
+
+
 -- Play a sound file in a loop at volume, optionally fading in over fadeSecs.
 -- The volume from before the first tone is restored by _stopTone().
 function _startTone(self, file, volume, fadeSecs, alarmState)
-	if not self.toneActive then
+	if not self:_ownsTone() then
 		-- cache previous volume setting
 		self.previousVolume = self.localPlayer:getVolume()
 	end
@@ -536,13 +543,18 @@ function _startTone(self, file, volume, fadeSecs, alarmState)
 	if fadeSecs and fadeSecs > 0 then
 		local startVolume = math.min(5, volume)
 		local step = 0
-		-- last volume written by the fade; anything else means the user
-		-- changed the volume, which ends the fade
-		local fadeVolume = startVolume
+		-- Volume, mute and power changes made on the device bump the
+		-- sequence number; server status updates do not. A user change
+		-- ends the fade.
+		local fadeSeq = self.localPlayer:getCurrentSequenceNumber()
 		self.localPlayer:volumeLocal(startVolume)
 		self.fadeTimer = Timer(1000,
 			function()
-				if self.localPlayer:getVolume() ~= fadeVolume then
+				if not self:_ownsTone() then
+					self:_stopFade()
+					return
+				end
+				if self.localPlayer:getCurrentSequenceNumber() ~= fadeSeq then
 					log:warn("*** Alarm: volume changed by user, stopping fade-in")
 					self:_stopFade()
 					return
@@ -553,8 +565,7 @@ function _startTone(self, file, volume, fadeSecs, alarmState)
 					v = volume
 					self:_stopFade()
 				end
-				fadeVolume = math.floor(v + 0.5)
-				self.localPlayer:volumeLocal(fadeVolume)
+				self.localPlayer:volumeLocal(math.floor(v + 0.5))
 			end,
 			false	-- repeat
 		)
@@ -571,6 +582,11 @@ function _stopTone(self)
 		self.previewTimer:stop()
 	end
 	if not self.toneActive then
+		return
+	end
+	if not self:_ownsTone() then
+		-- something else took over playback: leave it and its volume alone
+		self.toneActive = false
 		return
 	end
 	self.toneActive = false
@@ -1057,18 +1073,29 @@ function _fbSoundShow(self)
 	menu:setHeaderWidget(Textarea("help_text", self:string("FB_SOUND_HELP")))
 
 	for _, file in ipairs(self:_fbSoundList()) do
+		local radio = RadioButton("radio", group,
+			function()
+				log:info("*** Alarm: fallback sound set to ", file)
+				self:_fbSet("fbSound", file)
+				self:_fbRefreshMenu()
+				self:_fbPreview(file)
+			end,
+			file == current
+		)
 		menu:addItem({
 			text = self:_fbSoundName(file),
 			style = 'item_choice',
-			check = RadioButton("radio", group,
-				function()
-					log:info("*** Alarm: fallback sound set to ", file)
-					self:_fbSet("fbSound", file)
-					self:_fbRefreshMenu()
+			check = radio,
+			-- RadioGroup ignores selecting the selected button, so preview
+			-- the already chosen sound here; it can be replayed any time
+			callback = function()
+				if self:_fbSettings().sound == file then
 					self:_fbPreview(file)
-				end,
-				file == current
-			),
+				else
+					radio:setSelected()
+				end
+				return EVENT_CONSUME
+			end,
 		})
 	end
 
@@ -1103,7 +1130,7 @@ function _fbVolumeShow(self)
 		local volume = value * 5
 		self:_fbSet("fbVolume", volume)
 		self:_fbRefreshMenu()
-		if self.toneActive and not self.alarmInProgress then
+		if self:_ownsTone() and not self.alarmInProgress then
 			self.localPlayer:volumeLocal(volume)
 		end
 		return value
