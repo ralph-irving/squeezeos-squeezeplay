@@ -45,6 +45,7 @@ oo.class(_M, Applet)
 local POLL_INTERVAL   = 3000  -- ms between cable checks
 local DEBOUNCE_POLLS  = 2     -- equal readings needed before switching
 local DHCP_TIMEOUT    = 30    -- seconds to wait for a wired address
+local WIFI_TIMEOUT    = 60    -- seconds to wait for wifi before giving up on the notify
 local CHARGER_STATE   = "/sys/devices/platform/i2c-adapter:i2c-1/1-0010/charger_state"
 
 
@@ -155,14 +156,37 @@ function _carrier(self)
 end
 
 
-function _wiredAddress(self)
-	local f = io.popen("/bin/ip -4 addr show " .. self.eth:getName() .. " 2>/dev/null")
+-- usable IPv4 address of an interface; self-assigned 169.254.x.x doesn't count
+function _address(self, iface)
+	local f = io.popen("/bin/ip -4 addr show " .. iface:getName() .. " 2>/dev/null")
 	if not f then
 		return nil
 	end
 	local out = f:read("*a")
 	f:close()
-	return string.match(out, "inet (%d+%.%d+%.%d+%.%d+)")
+	for ip in string.gmatch(out, "inet (%d+%.%d+%.%d+%.%d+)") do
+		if not string.match(ip, "^169%.254%.") then
+			return ip
+		end
+	end
+	return nil
+end
+
+
+-- after switching to wifi: tell the server connections once wifi is usable
+function _checkWifiReady(self)
+	if not self.wifiSince then
+		return
+	end
+	local ip = self:_address(self.wlan)
+	if ip then
+		log:info("wifi network up, address ", ip)
+		self.wifiSince = nil
+		jnt:notify("networkConnected")
+	elseif os.time() - self.wifiSince > WIFI_TIMEOUT then
+		log:warn("wifi did not come up within ", WIFI_TIMEOUT, " seconds")
+		self.wifiSince = nil
+	end
 end
 
 
@@ -171,11 +195,18 @@ function _poll(self)
 		return
 	end
 
+	self:_checkWifiReady()
+
 	local wiredActive = self:_wiredActive()
 
-	if not wiredActive and self:_onBattery() then
+	if not wiredActive and not self.wiredSince and self:_onBattery() then
 		-- don't power the Ethernet PHY on battery
 		self.pending = nil
+		local name = self.eth:getName()
+		local flags = tonumber(_readFile("/sys/class/net/" .. name .. "/flags") or "")
+		if flags and (flags % 2) == 1 then
+			os.execute("/bin/ip link set " .. name .. " down")
+		end
 		return
 	end
 
@@ -189,16 +220,22 @@ function _poll(self)
 		self.wiredFailed = false
 	end
 
-	-- just switched to wired: wait for DHCP, give up after DHCP_TIMEOUT
-	if wiredActive and carrier and self.wiredSince then
-		local ip = self:_wiredAddress()
+	-- a wired attempt is pending: wait for DHCP, give up after DHCP_TIMEOUT.
+	-- This also covers a failed ifup (no ifstate entry): wifi is already
+	-- down then, so don't retry wired but fall back once the deadline passes.
+	if self.wiredSince then
+		if not carrier then
+			log:info("cable unplugged during wired attempt, going back to wifi")
+			self:_switch(_toWifiTask)
+			return
+		end
+		local ip = wiredActive and self:_address(self.eth)
 		if ip then
 			log:info("wired network up, address ", ip)
 			self.wiredSince = nil
 			jnt:notify("networkConnected")
 		elseif os.time() - self.wiredSince > DHCP_TIMEOUT then
 			log:warn("no address on the wired network, going back to wifi")
-			self.wiredSince = nil
 			self.wiredFailed = true
 			self:_switch(_toWifiTask)
 		end
@@ -276,12 +313,14 @@ function _toWiredTask(self)
 
 	log:info("cable plugged in, switching to wired (leaving wifi ", tostring(ssid), ")")
 
+	-- _poll checks that DHCP gave us an address; set before switching so a
+	-- failure inside t_selectNetwork still ends in the wifi fallback
+	self.wiredSince = os.time()
+	self.wifiSince = nil
+
 	self:_ensureWiredConfig()
 	-- brings wifi down and the wired interface up (DHCP)
 	self.eth:t_selectNetwork(self.eth:getName())
-
-	-- _poll checks that DHCP gave us an address
-	self.wiredSince = os.time()
 end
 
 
@@ -301,16 +340,17 @@ end
 
 
 function _toWifiTask(self)
+	self.wiredSince = nil
 	local ssid = self:_wifiSsid()
 	if not ssid then
 		log:warn("cable unplugged, but no wifi network is configured")
 		return
 	end
 
-	self.wiredSince = nil
 	log:info("switching to wifi ", ssid)
 	self.wlan:t_selectNetwork(ssid)
-	jnt:notify("networkConnected")
+	-- association and DHCP finish in the background; _poll notifies
+	self.wifiSince = os.time()
 end
 
 
